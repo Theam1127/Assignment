@@ -3,6 +3,7 @@ package my.edu.tarc.assignment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.audiofx.BassBoost;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,14 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
         Intent intent = new Intent(this,ItemDetail.class);
         intent.putExtra(GET_QUANTITY,content);
         startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent intent = new Intent(this,MainPage.class);
+        CodeScanner.this.finish();
+        startActivity(intent);
     }
 
     @Override
