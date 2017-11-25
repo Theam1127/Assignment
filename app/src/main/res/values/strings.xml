@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Assignment</string>
+    <string name="confirm">Confirm</string>
+    <string name="total">Total Amount: RM 33.00</string>
+    <string name="add_item">Add Item</string>
+    <string name="quantity">Enter Quantity:</string>
+</resources>
