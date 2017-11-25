@@ -27,4 +27,11 @@ public class ItemDetail extends AppCompatActivity {
         setResult(CodeScanner.REQUEST_ITEM_QUANTITY,intent);
         finish();
     }
+
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent intent = new Intent(this,CodeScanner.class);
+        ItemDetail.this.finish();
+        startActivity(intent);
+    }
 }
