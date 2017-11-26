@@ -30,7 +30,7 @@ public class ItemDetail extends AppCompatActivity {
 
     public void onBackPressed(){
         super.onBackPressed();
-        Intent intent = new Intent(this,CodeScanner.class);
+        Intent intent = new Intent(this,MainPage.class);
         ItemDetail.this.finish();
         startActivity(intent);
     }
