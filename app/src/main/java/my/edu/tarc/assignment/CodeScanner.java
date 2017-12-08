@@ -18,6 +18,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
     public static final int REQUEST_ITEM_QUANTITY = 0;
     public static final String GET_QUANTITY = "my.tarc.edu.assignment.GET_QUANTITY";
     public static final String QUANTITY = "my.tarc.edu.assignment.QUANTITY";
+    Item item;
     String content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,17 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
     @Override
     public void handleResult(Result result) {
         content = result.getText().toString();
+
+        //connect database to check existence of product
+        //if not exist, display error message and jump back to AddItem
+        //check cart database
+        //If same product already in the cart, make user add quantity instead.
+
+        //else
+        //store product details in Item
+        item = new Item(content, "Dutch Lady Milk 300ml", 100, 5.50);
         Intent intent = new Intent(this,ItemDetail.class);
-        intent.putExtra(GET_QUANTITY,content);
+        intent.putExtra(GET_QUANTITY,item);
         startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
     }
 
@@ -60,10 +70,10 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
         if(requestCode == REQUEST_ITEM_QUANTITY){
             int quantity;
             quantity = data.getIntExtra(QUANTITY,0);
-            Intent intent2 = new Intent();
-            intent2.putExtra(AddItem.NEW_ITEM,content);
-            intent2.putExtra(AddItem.NEW_ITEM_QUANTITY,quantity);
-            setResult(AddItem.REQUEST_CODE_CONTENT,intent2);
+            Item newItem = new Item(content, item.getItemName(), quantity, quantity*item.getPrice());
+            Intent intent = new Intent();
+            intent.putExtra(AddItem.NEW_ITEM,newItem);
+            setResult(AddItem.REQUEST_CODE_CONTENT,intent);
             finish();
         }
     }

@@ -14,8 +14,7 @@ import java.util.List;
 public class AddItem extends Fragment {
     public static final int REQUEST_CODE_CONTENT = 0;
     public static final String NEW_ITEM = "my.edu.tarc.assignment.PRODUCTID";
-    public static final String NEW_ITEM_QUANTITY = "my.edu.tarc.assignment.QTY";
-    TextView textViewPrice;
+    TextView textViewTotalPrice;
     double total_price = 0.0;
     ListView cart;
     List<Item> cart_list = null;
@@ -48,8 +47,8 @@ public class AddItem extends Fragment {
         total_price = 0.0;
         for (int a = 0; a < cart_list.size(); a++)
             total_price += cart_list.get(a).getPrice();
-        textViewPrice = (TextView) getActivity().findViewById(R.id.textViewPrice);
-        textViewPrice.setText(String.format("%.2f", total_price));
+        textViewTotalPrice = (TextView) getActivity().findViewById(R.id.textViewTotalPrice);
+        textViewTotalPrice.setText(String.format("%.2f", total_price));
     }
 
 
@@ -57,9 +56,7 @@ public class AddItem extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_CONTENT){
-            String productName = data.getStringExtra(NEW_ITEM);
-            int quantity = data.getIntExtra(NEW_ITEM_QUANTITY,0);
-            item = new Item("A0001",productName,quantity,10.50);
+            item = (Item)data.getSerializableExtra(NEW_ITEM);
             cart_list.add(item);
             arrayAdapter.notifyDataSetChanged();
         }

@@ -1,10 +1,12 @@
 package my.edu.tarc.assignment;
 
+import java.io.Serializable;
+
 /**
  * Created by Yeap Theam on 25/11/2017.
  */
 
-public class Item {
+public class Item implements Serializable {
     String itemID;
     String itemName;
     int quantity;

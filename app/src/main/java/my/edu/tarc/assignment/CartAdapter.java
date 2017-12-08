@@ -1,9 +1,7 @@
 package my.edu.tarc.assignment;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +48,16 @@ public class CartAdapter extends BaseAdapter implements ListAdapter {
             view = inflater.inflate(R.layout.cart_list,null);
         }
         TextView cartItem = (TextView)view.findViewById(R.id.textViewItem);
-        cartItem.setText(cart.get(position).toString());
+        TextView itemQty = (TextView)view.findViewById(R.id.textViewQuantity);
+        TextView itemTotalPrice = (TextView)view.findViewById(R.id.textViewPrice);
+        cartItem.setText(cart.get(position).getItemName());
+        itemQty.setText(Integer.toString(cart.get(position).getQuantity()));
+        itemTotalPrice.setText(String.format("%.2f",cart.get(position).getPrice()));
         Button deleteButton = (Button)view.findViewById(R.id.buttonDelete);
         deleteButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                TextView textViewPrice = (TextView)((Activity)context).findViewById(R.id.textViewPrice);
+                TextView textViewPrice = (TextView)((Activity)context).findViewById(R.id.textViewTotalPrice);
                 double price = Double.parseDouble(textViewPrice.getText().toString());
                 price -= cart.get(position).getPrice();
                 textViewPrice.setText(String.format("%.2f",price));
