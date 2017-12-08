@@ -1,65 +1,94 @@
 package my.edu.tarc.assignment;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
+public class MainPage extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-public class MainPage extends AppCompatActivity{
-
-    public static final int REQUEST_CODE_CONTENT = 0;
-    public static final String NEW_ITEM = "my.edu.tarc.assignment.PRODUCTID";
-    public static final String NEW_ITEM_QUANTITY = "my.edu.tarc.assignment.QTY";
-    TextView textViewPrice;
-    double total_price = 0.0;
-    ListView cart;
-    List<Item> cart_list = null;
-    CartAdapter arrayAdapter = null;
-    Item item = new Item();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-        cart = (ListView)findViewById(R.id.listViewCart);
-        cart_list = new ArrayList<Item>();
-        arrayAdapter = new CartAdapter(cart_list,this);
-        cart.setAdapter(arrayAdapter);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
-
-
-
-    public void addItem(View view) {
-        Intent intent = new Intent(this,CodeScanner.class);
-        startActivityForResult(intent, REQUEST_CODE_CONTENT);
-    }
-
-    public void onResume() {
-        super.onResume();
-        total_price = 0.0;
-        for (int a = 0; a < cart_list.size(); a++)
-            total_price += cart_list.get(a).getPrice();
-        textViewPrice = (TextView) findViewById(R.id.textViewPrice);
-        textViewPrice.setText(String.format("%.2f", total_price));
-    }
-
-
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_CONTENT){
-            String productName = data.getStringExtra(NEW_ITEM);
-            int quantity = data.getIntExtra(NEW_ITEM_QUANTITY,0);
-            item = new Item("A0001",productName,quantity,10.50);
-            cart_list.add(item);
-            arrayAdapter.notifyDataSetChanged();
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_page, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_AddItem) {
+            Fragment fragmentAddItem = new AddItem();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_main,fragmentAddItem).commit();
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
