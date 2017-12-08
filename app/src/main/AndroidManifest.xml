@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainPage">
+        <activity android:name=".MainPage"
+            android:label="MainPage"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CodeScanner" />
-        <activity android:name=".ItemDetail"></activity>
+        <activity android:name=".ItemDetail" />
     </application>
 
 </manifest>
