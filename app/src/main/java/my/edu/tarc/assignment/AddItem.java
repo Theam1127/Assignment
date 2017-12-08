@@ -12,7 +12,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 public class AddItem extends Fragment {
-
     public static final int REQUEST_CODE_CONTENT = 0;
     public static final String NEW_ITEM = "my.edu.tarc.assignment.PRODUCTID";
     public static final String NEW_ITEM_QUANTITY = "my.edu.tarc.assignment.QTY";
