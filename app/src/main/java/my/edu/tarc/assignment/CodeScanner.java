@@ -73,7 +73,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                         //store product details in Item (DONE)
                         Intent intent = new Intent(CodeScanner.this,ItemDetail.class);
                         intent.putExtra(GET_QUANTITY,item);
-                        startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
+                        CodeScanner.this.startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
                     }
                     else{
                         AlertDialog.Builder builder = new AlertDialog.Builder(CodeScanner.this, android.R.style.Theme_Material_Dialog_Alert);
@@ -82,7 +82,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = getIntent();
                                 finish();
-                                startActivity(intent);
+                                CodeScanner.this.startActivity(intent);
                             }
                         }).setIcon(android.R.drawable.ic_dialog_alert).show();
                     }
