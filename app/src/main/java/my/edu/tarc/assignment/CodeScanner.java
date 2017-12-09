@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.google.zxing.Result;
 
 import org.json.JSONArray;
@@ -90,7 +92,8 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
             }
         };
         ItemRequest itemRequest = new ItemRequest(content,responseListener);
-
+        RequestQueue queue = Volley.newRequestQueue(CodeScanner.this);
+        queue.add(itemRequest);
     }
 
     @Override
