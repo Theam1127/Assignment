@@ -1,15 +1,23 @@
 package my.edu.tarc.assignment;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 
+import com.android.volley.Response;
 import com.google.zxing.Result;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -42,18 +50,47 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
     @Override
     public void handleResult(Result result) {
         content = result.getText().toString();
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if(success){
+                        item.setItemID(jsonResponse.getString("productID"));
+                        item.setItemName(jsonResponse.getString("productName"));
+                        item.setPrice(jsonResponse.getDouble("productPrice"));
+                        item.setQuantity(jsonResponse.getInt("productQty"));
 
-        //connect database to check existence of product
-        //if not exist, display error message and jump back to AddItem
-        //check cart database
-        //If same product already in the cart, make user add quantity instead.
+                        //connect database to check existence of product (DONE)
+                        //if not exist, display error message and jump back to AddItem (DONE)
+                        //check cart database
+                        //If same product already in the cart, make user add quantity instead.
 
-        //else
-        //store product details in Item
-        item = new Item(content, "Dutch Lady Milk 300ml", 100, 5.50);
-        Intent intent = new Intent(this,ItemDetail.class);
-        intent.putExtra(GET_QUANTITY,item);
-        startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
+                        //else
+                        //store product details in Item (DONE)
+                        Intent intent = new Intent(CodeScanner.this,ItemDetail.class);
+                        intent.putExtra(GET_QUANTITY,item);
+                        startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
+                    }
+                    else{
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CodeScanner.this, android.R.style.Theme_Material_Dialog_Alert);
+                        builder.setMessage("Item not exist!").setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);
+                            }
+                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        ItemRequest itemRequest = new ItemRequest(content,responseListener);
+
     }
 
     @Override
@@ -70,7 +107,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
         if(requestCode == REQUEST_ITEM_QUANTITY){
             int quantity;
             quantity = data.getIntExtra(QUANTITY,0);
-            Item newItem = new Item(content, item.getItemName(), quantity, quantity*item.getPrice());
+            Item newItem = new Item(item.getItemID(), item.getItemName(), quantity, quantity*item.getPrice());
             Intent intent = new Intent();
             intent.putExtra(AddItem.NEW_ITEM,newItem);
             setResult(AddItem.REQUEST_CODE_CONTENT,intent);
