@@ -45,6 +45,7 @@ public class ItemDetail extends AppCompatActivity {
                 public void onResponse(String response) {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
+                        item = null;
                         item = new Item();
                         item.setItemID(jsonResponse.getString("productID"));
                         item.setItemName(jsonResponse.getString("productName"));
