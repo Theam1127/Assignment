@@ -29,32 +29,32 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="47dp"
         android:ems="10"
         android:inputType="number"
         android:textAlignment="center"
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintLeft_toRightOf="@+id/buttonMinus"
         app:layout_constraintRight_toLeftOf="@+id/buttonAdd"
+        android:layout_marginTop="36dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewCurrentQuantity" />
 
     <TextView
         android:id="@+id/textViewCurrentQuantity"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="53dp"
         android:text="@string/quantity"
         android:textAlignment="center"
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewItemID"
-        tools:text="@string/quantity" />
+        tools:text="@string/quantity"
+        app:layout_constraintHorizontal_bias="0.0"
+        tools:layout_editor_absoluteY="229dp" />
 
     <Button
         android:id="@+id/buttonConfirm"
@@ -79,7 +79,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="84dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="84dp"
         android:background="@android:color/transparent"
         android:onClick="addQuantity"
         android:text="@string/add"
@@ -96,7 +96,8 @@
         android:id="@+id/buttonMinus"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="85dp"
         android:layout_marginStart="85dp"
         android:background="@android:color/transparent"
         android:onClick="minusQuantity"
@@ -105,11 +106,35 @@
         android:textColor="@android:color/holo_red_dark"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/editTextQuantity"
-        android:layout_marginBottom="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editTextQuantity"
-        android:layout_marginTop="0dp"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewItemRM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rm"
+        android:textColor="@android:color/background_dark"
+        android:layout_marginStart="171dp"
+        android:layout_marginLeft="150dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="36dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemID" />
+
+    <TextView
+        android:id="@+id/textViewItemPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintLeft_toRightOf="@+id/textViewItemRM"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="36dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemID" />
 
 </android.support.constraint.ConstraintLayout>

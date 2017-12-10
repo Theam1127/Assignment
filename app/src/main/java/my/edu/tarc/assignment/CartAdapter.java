@@ -2,11 +2,14 @@ package my.edu.tarc.assignment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -65,7 +68,21 @@ public class CartAdapter extends BaseAdapter implements ListAdapter {
                 notifyDataSetChanged();
             }
         });
-
+        LinearLayout oneItem = view.findViewById(R.id.cartItemRow);
+        oneItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Item item = cart.get(position);
+                Intent intent = new Intent(context, ItemDetail.class);
+                intent.putExtra(AddItem.EDIT_ITEM, item);
+                ((Activity)context).startActivityForResult(intent, AddItem.REQUEST_ITEM_DETAIL);
+            }
+        });
         return view;
     }
+
+    public void onActivityResult (int requestCode, int resultCode, Intent data){
+        Log.d("CartAdapter", "onActivityResult");
+    }
+
 }

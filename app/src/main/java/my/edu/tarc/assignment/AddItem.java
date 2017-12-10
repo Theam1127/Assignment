@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,18 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 public class AddItem extends Fragment {
     public static final int REQUEST_CODE_CONTENT = 0;
+    public static final int REQUEST_ITEM_DETAIL = 1;
     public static final String NEW_ITEM = "my.edu.tarc.assignment.PRODUCTID";
+    public static final String EDIT_ITEM = "my.edu.tarc.assignment.EDITITEM";
+    public static final String EDITED_ITEM = "my.edu.tarc.assignment.EDITEDITEM";
     TextView textViewTotalPrice;
     double total_price = 0.0;
     ListView cart;
     List<Item> cart_list = null;
     CartAdapter arrayAdapter = null;
     Item item = new Item();
-
-
-    public List<Item> getCart(){
-        return this.cart_list;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,8 +59,8 @@ public class AddItem extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_CONTENT){
+            super.onActivityResult(requestCode, resultCode, data);
             item = (Item)data.getSerializableExtra(NEW_ITEM);
             boolean exist = false;
             for(int a=0;a<cart_list.size();a++)
@@ -73,6 +72,16 @@ public class AddItem extends Fragment {
                 if(exist == false)
                     cart_list.add(item);
             arrayAdapter.notifyDataSetChanged();
+        }
+        else if(requestCode == REQUEST_ITEM_DETAIL){
+            arrayAdapter.onActivityResult(requestCode, resultCode, data);
+            item = (Item)data.getSerializableExtra(EDITED_ITEM);
+            for(int a=0;a<cart_list.size();a++)
+                if(cart_list.get(a).getItemID().equals(item.getItemID())) {
+                    cart_list.get(a).setQuantity(cart_list.get(a).getQuantity() + item.getQuantity());
+                    cart_list.get(a).setPrice(cart_list.get(a).getPrice()+item.getPrice());
+                }
+                arrayAdapter.notifyDataSetChanged();
         }
     }
 
