@@ -95,7 +95,7 @@ public class ItemDetail extends AppCompatActivity {
             Intent intent = new Intent();
             if(editItem!=null) {
                 editItem.setPrice(Double.parseDouble(textViewItemPrice.getText().toString()));
-                editItem.setQuantity(Integer.parseInt(editTextQuantity.getText().toString()));
+                editItem.setQuantity(qtyPurchase);
                 intent.putExtra(AddItem.EDITED_ITEM, editItem);
                 setResult(AddItem.REQUEST_ITEM_DETAIL, intent);
             }

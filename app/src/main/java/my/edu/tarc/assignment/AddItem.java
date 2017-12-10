@@ -78,8 +78,8 @@ public class AddItem extends Fragment {
             item = (Item)data.getSerializableExtra(EDITED_ITEM);
             for(int a=0;a<cart_list.size();a++)
                 if(cart_list.get(a).getItemID().equals(item.getItemID())) {
-                    cart_list.get(a).setQuantity(cart_list.get(a).getQuantity() + item.getQuantity());
-                    cart_list.get(a).setPrice(cart_list.get(a).getPrice()+item.getPrice());
+                    cart_list.get(a).setQuantity(item.getQuantity());
+                    cart_list.get(a).setPrice(item.getPrice());
                 }
                 arrayAdapter.notifyDataSetChanged();
         }
