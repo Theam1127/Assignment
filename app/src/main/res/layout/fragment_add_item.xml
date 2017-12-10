@@ -80,7 +80,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -125,7 +125,7 @@
 
     <ListView
         android:id="@+id/listViewCart"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="388dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"

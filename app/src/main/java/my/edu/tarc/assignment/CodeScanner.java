@@ -58,7 +58,8 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                 try {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
-                    if(success){
+                    if(success==true){
+                        item = new Item();
                         item.setItemID(jsonResponse.getString("productID"));
                         item.setItemName(jsonResponse.getString("productName"));
                         item.setPrice(jsonResponse.getDouble("productPrice"));
@@ -77,14 +78,8 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                     }
                     else{
                         AlertDialog.Builder builder = new AlertDialog.Builder(CodeScanner.this, android.R.style.Theme_Material_Dialog_Alert);
-                        builder.setMessage("Item not exist!").setNegativeButton("Retry", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = getIntent();
-                                finish();
-                                CodeScanner.this.startActivity(intent);
-                            }
-                        }).setIcon(android.R.drawable.ic_dialog_alert).show();
+                        builder.setMessage("Item not exist!").setNegativeButton("Retry", null).setIcon(android.R.drawable.ic_dialog_alert).show();
+                        zXingScannerView.resumeCameraPreview(CodeScanner.this);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

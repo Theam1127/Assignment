@@ -3,7 +3,7 @@
     <string name="confirm">Confirm</string>
     <string name="total">Total:</string>
     <string name="add_item">Add Item</string>
-    <string name="quantity">Enter Quantity:</string>
+    <string name="quantity">Add Quantity:</string>
     <string name="rm">RM</string>
     <string name="remove">Remove</string>
     <string name="price">0.00</string>
@@ -21,4 +21,6 @@
     <string name="item">Items</string>
     <string name="qty">Quantity</string>
     <string name="amount">Price</string>
+    <string name="add">+</string>
+    <string name="Minus">-</string>
 </resources>

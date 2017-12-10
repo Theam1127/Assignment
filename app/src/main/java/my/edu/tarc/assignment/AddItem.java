@@ -20,7 +20,12 @@ public class AddItem extends Fragment {
     List<Item> cart_list = null;
     CartAdapter arrayAdapter = null;
     Item item = new Item();
-    public AddItem(){};
+
+
+    public List<Item> getCart(){
+        return this.cart_list;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +57,24 @@ public class AddItem extends Fragment {
     }
 
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_CONTENT){
             item = (Item)data.getSerializableExtra(NEW_ITEM);
-            cart_list.add(item);
+            boolean exist = false;
+            for(int a=0;a<cart_list.size();a++)
+                if(cart_list.get(a).getItemID().equals(item.getItemID())) {
+                    exist = true;
+                    cart_list.get(a).setQuantity(cart_list.get(a).getQuantity() + item.getQuantity());
+                    cart_list.get(a).setPrice(cart_list.get(a).getPrice()+item.getPrice());
+                }
+                if(exist == false)
+                    cart_list.add(item);
             arrayAdapter.notifyDataSetChanged();
         }
     }
+
+
 }
