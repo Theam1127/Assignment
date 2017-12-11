@@ -26,4 +26,5 @@
     <string name="cancel">Cancel</string>
     <string name="unit_price">"Unit Price: RM "</string>
     <string name="total_checkout">Total: RM</string>
+    <string name="purchase_summary">Purchase Summary</string>
 </resources>

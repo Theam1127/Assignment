@@ -25,6 +25,4 @@ public class ItemRequest extends StringRequest{
     public Map<String, String> getParams(){
         return params;
     }
-
-
 }

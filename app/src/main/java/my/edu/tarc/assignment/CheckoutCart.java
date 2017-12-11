@@ -6,6 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +38,23 @@ public class CheckoutCart extends AppCompatActivity {
 
     public void confirmCheckout(View view){
         for(int a=0;a<cart.size();a++){
-
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {}
+            };
+            ItemUpdate itemUpdate = new ItemUpdate(cart.get(a).getItemID(),cart.get(a).getQuantity(), responseListener);
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(itemUpdate);
         }
+        Intent intent = new Intent();
+        intent.putExtra(AddItem.CHECKOUT_CART, "SUCCESS");
+        setResult(AddItem.REQUEST_CHECKOUT, intent);
+        Toast.makeText(this,"Checkout Successfully",Toast.LENGTH_SHORT).show();
+        finish();
     }
+
+    public void cancelCheckout(View view){
+        finish();
+    }
+
 }

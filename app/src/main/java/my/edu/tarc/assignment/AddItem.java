@@ -29,6 +29,7 @@ public class AddItem extends Fragment {
     public static final String NEW_ITEM = "my.edu.tarc.assignment.PRODUCTID";
     public static final String EDIT_ITEM = "my.edu.tarc.assignment.EDITITEM";
     public static final String DB_ITEM = "my.edu.tarc.assignment.DBITEM";
+    public static final int REQUEST_CHECKOUT = 3;
     public static final int REQUEST_ITEM_DETAIL = 2;
     public static final String EDITED_ITEM = "my.edu.tarc.assignment.EDITEDITEM";
     public static final String CHECKOUT_CART = "my.edu.tarc.assignment.CHECKOUT";
@@ -96,7 +97,7 @@ public class AddItem extends Fragment {
                     Bundle checkout_cart = new Bundle();
                     checkout_cart.putSerializable(CHECKOUT_CART, (Serializable) cart_list);
                     intent.putExtra(CHECKOUT_CART, checkout_cart);
-                    startActivity(intent);
+                    startActivityForResult(intent,3);
                 }
             }
         });
@@ -142,6 +143,12 @@ public class AddItem extends Fragment {
                 }
             }
             arrayAdapter.notifyDataSetChanged();
+        } else if (requestCode == REQUEST_CHECKOUT) {
+            String status = data.getStringExtra(CHECKOUT_CART);
+            if(status.equals("SUCCESS")) {
+                cart_list.clear();
+                arrayAdapter.notifyDataSetChanged();
+            }
         }
     }
 }
