@@ -14,12 +14,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="137dp"
+        android:layout_marginTop="81dp"
         android:textColor="@android:color/background_dark"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.501" />
 
     <EditText
         android:id="@+id/editTextQuantity"
@@ -32,10 +33,10 @@
         android:ems="10"
         android:inputType="number"
         android:textAlignment="center"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintLeft_toRightOf="@+id/buttonMinus"
         app:layout_constraintRight_toLeftOf="@+id/buttonAdd"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="11dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewCurrentQuantity" />
 
     <TextView
@@ -54,8 +55,8 @@
         app:layout_constraintRight_toRightOf="parent"
         tools:text="@string/quantity"
         app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewItemRM" />
+        android:layout_marginTop="37dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCheckoutTtl" />
 
     <Button
         android:id="@+id/buttonConfirm"
@@ -73,7 +74,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/editTextQuantity"
-        app:layout_constraintVertical_bias="0.637" />
+        app:layout_constraintVertical_bias="0.662" />
 
     <Button
         android:id="@+id/buttonAdd"
@@ -116,13 +117,15 @@
         android:id="@+id/textViewItemRM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/rm"
+        android:layout_weight="0.1"
+        android:text="@string/unit_price"
+        android:textAlignment="textEnd"
         android:textColor="@android:color/background_dark"
-        android:layout_marginStart="155dp"
-        android:layout_marginLeft="150dp"
+        android:layout_marginLeft="75dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="36dp"
-        app:layout_constraintTop_toBottomOf="@+id/textViewItemID" />
+        android:layout_marginTop="25dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemID"
+        android:layout_marginStart="112dp" />
 
     <TextView
         android:id="@+id/textViewItemPrice"
@@ -130,12 +133,40 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintHorizontal_bias="0.096"
+        android:layout_marginTop="25dp"
+        android:layout_weight="0.06"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintHorizontal_bias="0.237"
         app:layout_constraintLeft_toRightOf="@+id/textViewItemRM"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="36dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewItemID" />
+
+    <TextView
+        android:id="@+id/textViewTotalCheckOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_weight="0.06"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="@+id/textViewItemPrice"
+        app:layout_constraintRight_toRightOf="@+id/textViewItemPrice"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemPrice" />
+
+    <TextView
+        android:id="@+id/textViewCheckoutTtl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_weight="0.09"
+        android:text="@string/total_checkout"
+        android:textAlignment="textEnd"
+        android:textColor="@android:color/background_dark"
+        app:layout_constraintTop_toBottomOf="@+id/textViewItemRM"
+        app:layout_constraintRight_toRightOf="@+id/textViewItemRM" />
 
 </android.support.constraint.ConstraintLayout>

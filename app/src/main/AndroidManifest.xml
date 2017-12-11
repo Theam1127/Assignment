@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="my.edu.tarc.assignment">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainPage"
+        <activity
+            android:name=".MainPage"
             android:label="MainPage"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,6 +24,7 @@
         </activity>
         <activity android:name=".CodeScanner" />
         <activity android:name=".ItemDetail" />
+        <activity android:name=".CheckoutCart"></activity>
     </application>
 
 </manifest>

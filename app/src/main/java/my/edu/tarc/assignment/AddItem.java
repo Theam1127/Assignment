@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 public class AddItem extends Fragment {
@@ -29,6 +31,7 @@ public class AddItem extends Fragment {
     public static final String DB_ITEM = "my.edu.tarc.assignment.DBITEM";
     public static final int REQUEST_ITEM_DETAIL = 2;
     public static final String EDITED_ITEM = "my.edu.tarc.assignment.EDITEDITEM";
+    public static final String CHECKOUT_CART = "my.edu.tarc.assignment.CHECKOUT";
     TextView textViewTotalPrice;
     double total_price = 0.0;
     ListView cart;
@@ -81,6 +84,23 @@ public class AddItem extends Fragment {
                 queue.add(itemRequest);
             }
         });
+
+        Button buttonCheckOut = (Button)v.findViewById(R.id.buttonCheckout);
+        buttonCheckOut.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(cart_list.isEmpty())
+                    Toast.makeText(getActivity(),"You have no items in your cart!", Toast.LENGTH_SHORT).show();
+                else {
+                    Intent intent = new Intent(getActivity(), CheckoutCart.class);
+                    Bundle checkout_cart = new Bundle();
+                    checkout_cart.putSerializable(CHECKOUT_CART, (Serializable) cart_list);
+                    intent.putExtra(CHECKOUT_CART, checkout_cart);
+                    startActivity(intent);
+                }
+            }
+        });
+
         return v;
     }
 

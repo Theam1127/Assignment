@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class ItemDetail extends AppCompatActivity {
-    TextView textViewItemID, textViewItemPrice;
+    TextView textViewItemID, textViewItemPrice, textViewItemTotalPrice;
     EditText editTextQuantity;
     Item item, editItem;
     List<Item> cart;
@@ -32,6 +32,7 @@ public class ItemDetail extends AppCompatActivity {
         textViewItemID = (TextView) findViewById(R.id.textViewItemID);
         editTextQuantity = (EditText) findViewById(R.id.editTextQuantity);
         textViewItemPrice = (TextView) findViewById(R.id.textViewItemPrice);
+        textViewItemTotalPrice = (TextView)findViewById(R.id.textViewTotalCheckOut);
         item = (Item) getIntent().getSerializableExtra(CodeScanner.GET_QUANTITY);
         int currentQuantity = 0;
         if(item!=null) {
@@ -46,7 +47,8 @@ public class ItemDetail extends AppCompatActivity {
             tvPrice = item.getPrice();
         }
         textViewItemID.setText(tvItemName);
-        textViewItemPrice.setText(String.format("%.2f",tvPrice*currentQuantity));
+        textViewItemPrice.setText(String.format("%.2f",tvPrice));
+        textViewItemTotalPrice.setText(String.format("%.2f", tvPrice*currentQuantity));
         editTextQuantity.setText(Integer.toString(currentQuantity));
     }
 
@@ -56,7 +58,7 @@ public class ItemDetail extends AppCompatActivity {
         qty++;
         price*=qty;
         editTextQuantity.setText(Integer.toString(qty));
-        textViewItemPrice.setText(String.format("%.2f",price));
+        textViewItemTotalPrice.setText(String.format("%.2f",price));
     }
 
     public void minusQuantity(View view){
@@ -66,7 +68,7 @@ public class ItemDetail extends AppCompatActivity {
             qty--;
         price*=qty;
         editTextQuantity.setText(Integer.toString(qty));
-        textViewItemPrice.setText(String.format("%.2f",price));
+        textViewItemTotalPrice.setText(String.format("%.2f",price));
     }
 
     public void confirmAddCart(View view){
@@ -74,7 +76,7 @@ public class ItemDetail extends AppCompatActivity {
         if(qtyPurchase <= item.getQuantity() && qtyPurchase != 0) {
             Intent intent = new Intent();
             if(editItem!=null) {
-                editItem.setPrice(Double.parseDouble(textViewItemPrice.getText().toString()));
+                editItem.setPrice(Double.parseDouble(textViewItemTotalPrice.getText().toString()));
                 editItem.setQuantity(qtyPurchase);
                 intent.putExtra(AddItem.EDITED_ITEM, editItem);
                 setResult(AddItem.REQUEST_ITEM_DETAIL, intent);

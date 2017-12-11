@@ -58,6 +58,6 @@ public class Item implements Serializable {
 
     @Override
     public String toString() {
-        return   itemID+ "\t" + itemName + "\t" + quantity + "\tRM " + price;
+        return String.format("Item Name: %s\n\t\t\tQuantity: %d\n\t\t\tTotal: RM %.2f", itemName, quantity, price);
     }
 }

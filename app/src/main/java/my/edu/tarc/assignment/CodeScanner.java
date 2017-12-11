@@ -92,14 +92,6 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
     }
 
     @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        Intent intent = new Intent(this,AddItem.class);
-        CodeScanner.this.finish();
-        startActivity(intent);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_ITEM_QUANTITY){

@@ -23,4 +23,7 @@
     <string name="amount">Price</string>
     <string name="add">+</string>
     <string name="Minus">-</string>
+    <string name="cancel">Cancel</string>
+    <string name="unit_price">"Unit Price: RM "</string>
+    <string name="total_checkout">Total: RM</string>
 </resources>
