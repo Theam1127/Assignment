@@ -1,6 +1,8 @@
 package my.edu.tarc.assignment;
 
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -54,7 +56,7 @@ public class CheckoutCart extends AppCompatActivity {
     }
 
     public void cancelCheckout(View view){
-        finish();
+        getFragmentManager().popBackStackImmediate();
     }
 
 }

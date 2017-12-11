@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -50,25 +52,39 @@ public class ItemDetail extends AppCompatActivity {
         textViewItemPrice.setText(String.format("%.2f",tvPrice));
         textViewItemTotalPrice.setText(String.format("%.2f", tvPrice*currentQuantity));
         editTextQuantity.setText(Integer.toString(currentQuantity));
+
+        editTextQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int qty = Integer.parseInt(editTextQuantity.getText().toString());
+                double price = item.getPrice();
+                price*=qty;
+                textViewItemTotalPrice.setText(String.format("%.2f",price));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     public void addQuantity(View view){
         int qty = Integer.parseInt(editTextQuantity.getText().toString());
-        double price = item.getPrice();
         qty++;
-        price*=qty;
         editTextQuantity.setText(Integer.toString(qty));
-        textViewItemTotalPrice.setText(String.format("%.2f",price));
     }
 
     public void minusQuantity(View view){
         int qty = Integer.parseInt(editTextQuantity.getText().toString());
-        double price = item.getPrice();
         if(qty!=0)
             qty--;
-        price*=qty;
         editTextQuantity.setText(Integer.toString(qty));
-        textViewItemTotalPrice.setText(String.format("%.2f",price));
     }
 
     public void confirmAddCart(View view){
@@ -90,13 +106,10 @@ public class ItemDetail extends AppCompatActivity {
         else if(qtyPurchase ==0)
             Toast.makeText(this,"Quantity should not be 0!",Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(this, "Quantity exceeded stock available!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Quantity exceeded stock available! "+"("+item.getQuantity()+")", Toast.LENGTH_SHORT).show();
     }
 
     public void onBackPressed(){
         super.onBackPressed();
-        Intent intent = new Intent(this,AddItem.class);
-        ItemDetail.this.finish();
-        startActivity(intent);
     }
 }
