@@ -13,6 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +30,6 @@ import java.util.List;
 public class CartAdapter extends BaseAdapter implements ListAdapter {
     private List<Item> cart = new ArrayList<Item>();
     private Context context;
-
     public CartAdapter(List<Item> cart, Context context){
         this.cart = cart;
         this.context = context;
@@ -68,21 +74,8 @@ public class CartAdapter extends BaseAdapter implements ListAdapter {
                 notifyDataSetChanged();
             }
         });
-        LinearLayout oneItem = view.findViewById(R.id.cartItemRow);
-        oneItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Item item = cart.get(position);
-                Intent intent = new Intent(context, ItemDetail.class);
-                intent.putExtra(AddItem.EDIT_ITEM, item);
-                ((Activity)context).startActivityForResult(intent, AddItem.REQUEST_ITEM_DETAIL);
-            }
-        });
-        return view;
-    }
 
-    public void onActivityResult (int requestCode, int resultCode, Intent data){
-        Log.d("CartAdapter", "onActivityResult");
+        return view;
     }
 
 }

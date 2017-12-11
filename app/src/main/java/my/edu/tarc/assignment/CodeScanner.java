@@ -25,7 +25,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class CodeScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler  {
     private ZXingScannerView zXingScannerView;
-    public static final int REQUEST_ITEM_QUANTITY = 0;
+    public static final int REQUEST_ITEM_QUANTITY = 3;
     public static final String GET_QUANTITY = "my.tarc.edu.assignment.GET_QUANTITY";
     public static final String QUANTITY = "my.tarc.edu.assignment.QUANTITY";
     Item item;

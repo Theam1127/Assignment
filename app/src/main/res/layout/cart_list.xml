@@ -3,6 +3,7 @@
     android:id="@+id/cartItemRow"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     android:weightSum="1.0">
 

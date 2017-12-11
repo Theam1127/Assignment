@@ -38,36 +38,15 @@ public class ItemDetail extends AppCompatActivity {
             tvItemName = item.getItemName();
             tvPrice = item.getPrice();
         }
-        editItem = (Item) getIntent().getSerializableExtra(AddItem.EDIT_ITEM);
-        if(editItem!=null) {
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-                        item = null;
-                        item = new Item();
-                        item.setItemID(jsonResponse.getString("productID"));
-                        item.setItemName(jsonResponse.getString("productName"));
-                        item.setPrice(jsonResponse.getDouble("productPrice"));
-                        item.setQuantity(jsonResponse.getInt("productQty"));
-                    }
-                    catch(JSONException e){
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            ItemRequest itemRequest = new ItemRequest(editItem.getItemID(),responseListener);
-            RequestQueue queue = Volley.newRequestQueue(ItemDetail.this);
-            queue.add(itemRequest);
-
+        else {
+            editItem = (Item) getIntent().getSerializableExtra(AddItem.EDIT_ITEM);
+            item = (Item) getIntent().getSerializableExtra(AddItem.DB_ITEM);
             currentQuantity = editItem.getQuantity();
             tvItemName = editItem.getItemName();
-            tvPrice = editItem.getPrice();
+            tvPrice = item.getPrice();
         }
         textViewItemID.setText(tvItemName);
-        textViewItemPrice.setText(String.format("%.2f",tvPrice));
+        textViewItemPrice.setText(String.format("%.2f",tvPrice*currentQuantity));
         editTextQuantity.setText(Integer.toString(currentQuantity));
     }
 
