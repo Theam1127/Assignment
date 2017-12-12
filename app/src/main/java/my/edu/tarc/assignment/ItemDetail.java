@@ -64,6 +64,11 @@ public class ItemDetail extends AppCompatActivity {
                 if(editTextQuantity.getText().toString().equals(""))
                     editTextQuantity.setText("0");
                 int qty = Integer.parseInt(editTextQuantity.getText().toString());
+                if(qty>item.getQuantity()) {
+                    editTextQuantity.setText(Integer.toString(item.getQuantity()));
+                    qty=item.getQuantity();
+                    Toast.makeText(ItemDetail.this, "Quantity exceeded stock available! "+"("+item.getQuantity()+")", Toast.LENGTH_SHORT).show();
+                }
                 double price = item.getPrice();
                 price *= qty;
                 textViewItemTotalPrice.setText(String.format("%.2f", price));
@@ -107,8 +112,7 @@ public class ItemDetail extends AppCompatActivity {
         }
         else if(qtyPurchase ==0)
             Toast.makeText(this,"Quantity should not be 0!",Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(this, "Quantity exceeded stock available! "+"("+item.getQuantity()+")", Toast.LENGTH_SHORT).show();
+
     }
 
     public void onBackPressed(){
