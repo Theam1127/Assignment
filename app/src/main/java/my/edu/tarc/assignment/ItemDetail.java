@@ -61,10 +61,12 @@ public class ItemDetail extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(editTextQuantity.getText().toString().equals(""))
+                    editTextQuantity.setText("0");
                 int qty = Integer.parseInt(editTextQuantity.getText().toString());
                 double price = item.getPrice();
-                price*=qty;
-                textViewItemTotalPrice.setText(String.format("%.2f",price));
+                price *= qty;
+                textViewItemTotalPrice.setText(String.format("%.2f", price));
             }
 
             @Override
