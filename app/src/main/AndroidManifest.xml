@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainPage"
+            android:screenOrientation="portrait"
             android:label="MainPage"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,9 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CodeScanner" />
-        <activity android:name=".ItemDetail" />
-        <activity android:name=".CheckoutCart"></activity>
+        <activity android:name=".CodeScanner"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ItemDetail"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CheckoutCart"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

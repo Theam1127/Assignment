@@ -53,16 +53,23 @@ public class ItemDetail extends AppCompatActivity {
         textViewItemTotalPrice.setText(String.format("%.2f", tvPrice*currentQuantity));
         editTextQuantity.setText(Integer.toString(currentQuantity));
 
+        editTextQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextQuantity.selectAll();
+            }
+        });
         editTextQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(editTextQuantity.getText().toString().equals(""))
+                if(editTextQuantity.getText().toString().equals("")) {
                     editTextQuantity.setText("0");
+                    editTextQuantity.selectAll();
+                }
                 int qty = Integer.parseInt(editTextQuantity.getText().toString());
                 if(qty>item.getQuantity()) {
                     editTextQuantity.setText(Integer.toString(item.getQuantity()));
@@ -76,7 +83,6 @@ public class ItemDetail extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
     }
