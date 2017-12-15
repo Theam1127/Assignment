@@ -27,4 +27,16 @@
     <string name="unit_price">"Unit Price: RM "</string>
     <string name="total_checkout">Total: RM</string>
     <string name="purchase_summary">Purchase Summary</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="age">Age</string>
+    <string name="birthday">Birthday</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="register">Register</string>
+    <string name="welcome">Welcome</string>
+    <string name="gender">Gender:</string>
 </resources>
