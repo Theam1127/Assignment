@@ -51,6 +51,10 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success){
+                                //Keep user login using sharedPreference
+                                //can refer link below
+                                //https://stackoverflow.com/questions/12744337/how-to-keep-android-applications-always-be-logged-in-state
+
                                 Intent loginIntent = new Intent(LoginActivity.this, MainPage.class);
                                 LoginActivity.this.startActivity(loginIntent);
                                 finish();

@@ -77,8 +77,8 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                         CodeScanner.this.startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
                     }
                     else{
-                        AlertDialog.Builder builder = new AlertDialog.Builder(CodeScanner.this, android.R.style.Theme_Material_Dialog_Alert);
-                        builder.setMessage("Item not exist!").setNegativeButton("Retry", null).setIcon(android.R.drawable.ic_dialog_alert).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CodeScanner.this);
+                        builder.setMessage("Item not exist!").setNegativeButton("Retry", null).create().show();
                         zXingScannerView.resumeCameraPreview(CodeScanner.this);
                     }
                 } catch (JSONException e) {
