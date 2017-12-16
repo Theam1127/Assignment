@@ -14,24 +14,38 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
+            android:label="EasyShop"
             android:screenOrientation="portrait"
-            android:label="Login"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainPage"
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity"/>
+
+        <activity
+            android:name=".MainPage"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
-        <activity android:name=".CodeScanner"
+
+        <activity
+            android:name=".CodeScanner"
+            android:parentActivityName=".MainPage"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ItemDetail"
+
+        <activity
+            android:name=".ItemDetail"
+            android:parentActivityName=".MainPage"
             android:screenOrientation="portrait"/>
-        <activity android:name=".CheckoutCart"
-            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".CheckoutCart"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainPage"/>
     </application>
 
 </manifest>

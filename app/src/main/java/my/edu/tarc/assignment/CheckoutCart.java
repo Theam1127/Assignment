@@ -3,11 +3,14 @@ package my.edu.tarc.assignment;
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -22,18 +25,24 @@ import java.util.List;
 
 public class CheckoutCart extends AppCompatActivity {
     List<Item> cart;
+    TextView textViewCheckoutTotal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_cart);
+        double total = 0.0;
         Intent intent = getIntent();
         Bundle checkout_cart = intent.getBundleExtra(AddItem.CHECKOUT_CART);
         cart = new ArrayList<Item>();
         cart = (List<Item>)checkout_cart.getSerializable(AddItem.CHECKOUT_CART);
         List<String> cart_items = new ArrayList<String>();
         ListView listViewCheckOutCart = (ListView)findViewById(R.id.listViewCheckOutCart);
-        for(int a=0;a<cart.size();a++)
-            cart_items.add(a+1+". "+cart.get(a).toString());
+        for(int a=0;a<cart.size();a++) {
+            cart_items.add(a + 1 + ". " + cart.get(a).toString());
+            total+=cart.get(a).getPrice();
+        }
+        textViewCheckoutTotal = (TextView)findViewById(R.id.textViewTotalCheckOut);
+        textViewCheckoutTotal.setText(String.format("RM %.2f", total));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, cart_items);
         listViewCheckOutCart.setAdapter(arrayAdapter);
     }
@@ -55,8 +64,24 @@ public class CheckoutCart extends AppCompatActivity {
         finish();
     }
 
-    public void cancelCheckout(View view){
-        getFragmentManager().popBackStackImmediate();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = NavUtils.getParentActivityIntent(this);
+                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                return(true);
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = NavUtils.getParentActivityIntent(this);
+        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 
 }

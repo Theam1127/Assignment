@@ -2,10 +2,12 @@ package my.edu.tarc.assignment;
 
 import android.content.Intent;
 import android.support.annotation.IntegerRes;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -86,6 +88,25 @@ public class ItemDetail extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = NavUtils.getParentActivityIntent(this);
+                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                return(true);
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = NavUtils.getParentActivityIntent(this);
+        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+    }
 
     public void addQuantity(View view){
         int qty = Integer.parseInt(editTextQuantity.getText().toString());
@@ -121,7 +142,4 @@ public class ItemDetail extends AppCompatActivity {
 
     }
 
-    public void onBackPressed(){
-        super.onBackPressed();
-    }
 }

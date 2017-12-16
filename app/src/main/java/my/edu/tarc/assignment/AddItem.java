@@ -2,6 +2,7 @@ package my.edu.tarc.assignment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public class AddItem extends Fragment {
     public static final int REQUEST_ITEM_DETAIL = 2;
     public static final String EDITED_ITEM = "my.edu.tarc.assignment.EDITEDITEM";
     public static final String CHECKOUT_CART = "my.edu.tarc.assignment.CHECKOUT";
+    private static final String SAVE_ITEM_LIST = "my.edu.tarc.assignment.SAVEITEMLIST";
     TextView textViewTotalPrice;
     double total_price = 0.0;
     ListView cart;
@@ -41,8 +43,22 @@ public class AddItem extends Fragment {
     Item item = new Item();
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(SAVE_ITEM_LIST, cart.onSaveInstanceState());
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null)
+            cart=savedInstanceState.getParcelable(SAVE_ITEM_LIST);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         View v = inflater.inflate(R.layout.fragment_add_item,container,false);
         cart = (ListView)v.findViewById(R.id.listViewCart);
         cart_list = new ArrayList<Item>();
@@ -123,16 +139,18 @@ public class AddItem extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_CONTENT){
             item = (Item)data.getSerializableExtra(NEW_ITEM);
-            boolean exist = false;
-            for(int a=0;a<cart_list.size();a++)
-                if(cart_list.get(a).getItemID().equals(item.getItemID())) {
-                    exist = true;
-                    cart_list.get(a).setQuantity(cart_list.get(a).getQuantity() + item.getQuantity());
-                    cart_list.get(a).setPrice(cart_list.get(a).getPrice()+item.getPrice());
-                }
-                if(exist == false)
+            if(item!=null) {
+                boolean exist = false;
+                for (int a = 0; a < cart_list.size(); a++)
+                    if (cart_list.get(a).getItemID().equals(item.getItemID())) {
+                        exist = true;
+                        cart_list.get(a).setQuantity(cart_list.get(a).getQuantity() + item.getQuantity());
+                        cart_list.get(a).setPrice(cart_list.get(a).getPrice() + item.getPrice());
+                    }
+                if (exist == false)
                     cart_list.add(item);
-            arrayAdapter.notifyDataSetChanged();
+                arrayAdapter.notifyDataSetChanged();
+            }
     }
         else if(requestCode == REQUEST_ITEM_DETAIL){
             item = (Item)data.getSerializableExtra(EDITED_ITEM);
