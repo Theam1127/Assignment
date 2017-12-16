@@ -80,8 +80,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                     builder.setMessage("Register Failed").setNegativeButton("Retry", null).create().show();
                                 }
+
                                 if (pDialog.isShowing())
                                     pDialog.dismiss();
+
                             } catch (JSONException e) {
                                 Toast.makeText(getApplicationContext(), "Error:" + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
