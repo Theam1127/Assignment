@@ -15,7 +15,7 @@
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
-            android:label="Login"
+            android:label="EasyShop"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

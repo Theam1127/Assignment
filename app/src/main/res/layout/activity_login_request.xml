@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="my.edu.tarc.testing.LoginRequest">
+    tools:context="my.edu.tarc.assignment.LoginRequest">
 
 </android.support.constraint.ConstraintLayout>
