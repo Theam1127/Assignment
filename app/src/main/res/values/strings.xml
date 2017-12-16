@@ -39,4 +39,8 @@
     <string name="register">Register</string>
     <string name="welcome">Welcome</string>
     <string name="gender">Gender:</string>
+    <string name="error_username">Please enter username</string>
+    <string name="error_password">Please enter password</string>
+    <string name="error_age">Please enter your age</string>
+    <string name="error_email">Please enter an email</string>
 </resources>

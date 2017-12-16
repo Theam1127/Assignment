@@ -1,5 +1,6 @@
 package my.edu.tarc.assignment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
+    private ProgressDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText etUsername = (EditText)findViewById(R.id.etUsername);
         final EditText etPassword = (EditText)findViewById(R.id.etPassword);
         Button btnLogin = (Button)findViewById(R.id.btnLogin);
+        pDialog = new ProgressDialog(this);
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +45,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view){
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
+
+                if (!pDialog.isShowing())
+                    pDialog.setMessage("Logging in...");
+                pDialog.show();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
                     @Override
@@ -63,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("Login Failed").setNegativeButton("Retry", null).create().show();
                             }
+                            if (pDialog.isShowing())
+                                pDialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
