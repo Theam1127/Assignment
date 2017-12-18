@@ -46,45 +46,54 @@ public class LoginActivity extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
 
-                if (!pDialog.isShowing())
-                    pDialog.setMessage("Logging in...");
-                pDialog.show();
+                if(username.isEmpty()){
+                    etUsername.setError(getString(R.string.error_username));
+                    return;
+                }
+                else if(password.isEmpty()){
+                    etPassword.setError(getString(R.string.error_password));
+                    return;
+                }
+                else {
+                    if (!pDialog.isShowing())
+                        pDialog.setMessage("Logging in...");
+                    pDialog.show();
 
-                Response.Listener<String> responseListener = new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response){
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonResponse = new JSONObject(response);
+                                boolean success = jsonResponse.getBoolean("success");
 
-                            if(success){
-                                //Keep user login using sharedPreference
-                                //can refer link below
-                                //https://stackoverflow.com/questions/12744337/how-to-keep-android-applications-always-be-logged-in-state
+                                if (success) {
+                                    //Keep user login using sharedPreference
+                                    //can refer link below
+                                    //https://stackoverflow.com/questions/12744337/how-to-keep-android-applications-always-be-logged-in-state
 
-                                Intent loginIntent = new Intent(LoginActivity.this, MainPage.class);
-                                LoginActivity.this.startActivity(loginIntent);
-                                finish();
+                                    Intent loginIntent = new Intent(LoginActivity.this, MainPage.class);
+                                    LoginActivity.this.startActivity(loginIntent);
+                                    finish();
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                    builder.setMessage("Login Failed").setNegativeButton("Retry", null).create().show();
+                                }
+                                if (pDialog.isShowing())
+                                    pDialog.dismiss();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Login Failed").setNegativeButton("Retry", null).create().show();
-                            }
-                            if (pDialog.isShowing())
-                                pDialog.dismiss();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+
                         }
+                    };
 
-                    }
-                };
-
-                LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
-
+                    LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                    queue.add(loginRequest);
+                }
             }
         });
+
     }
 
 

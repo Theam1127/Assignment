@@ -1,6 +1,7 @@
 package my.edu.tarc.assignment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ public class AddItem extends Fragment {
     public static final String CHECKOUT_CART = "my.edu.tarc.assignment.CHECKOUT";
     private static final String SAVE_ITEM_LIST = "my.edu.tarc.assignment.SAVEITEMLIST";
     TextView textViewTotalPrice;
+    ProgressDialog progressDialog;
     double total_price = 0.0;
     ListView cart;
     List<Item> cart_list = null;
@@ -64,6 +66,7 @@ public class AddItem extends Fragment {
         cart_list = new ArrayList<Item>();
         arrayAdapter = new CartAdapter(cart_list,getActivity());
         cart.setAdapter(arrayAdapter);
+        progressDialog = new ProgressDialog(getActivity());
         Button buttonAddItem = (Button)v.findViewById(R.id.buttonAddItem);
         buttonAddItem.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -76,6 +79,9 @@ public class AddItem extends Fragment {
         cart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!progressDialog.isShowing())
+                    progressDialog.setMessage("Please wait...");
+                progressDialog.show();
                 final Item editItem = cart_list.get(position);
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -109,6 +115,9 @@ public class AddItem extends Fragment {
                 if(cart_list.isEmpty())
                     Toast.makeText(getActivity(),"You have no items in your cart!", Toast.LENGTH_SHORT).show();
                 else {
+                    if(!progressDialog.isShowing())
+                        progressDialog.setMessage("Please wait...");
+                    progressDialog.show();
                     Intent intent = new Intent(getActivity(), CheckoutCart.class);
                     Bundle checkout_cart = new Bundle();
                     checkout_cart.putSerializable(CHECKOUT_CART, (Serializable) cart_list);

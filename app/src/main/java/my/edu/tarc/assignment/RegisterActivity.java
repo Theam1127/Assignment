@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = etRUsername.getText().toString();
                 String password = etRPassword.getText().toString();
-                int age = Integer.valueOf(etRAge.getText().toString()).intValue();
+                String ageText = etRAge.getText().toString();
                 String email = etREmail.getText().toString();
                 String gender = ((RadioButton) findViewById(rgGender.getCheckedRadioButtonId())).getText().toString();
 
@@ -51,14 +51,16 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (password.isEmpty()) {
                     etRPassword.setError(getString(R.string.error_password));
                     return;
-                } else if (Integer.toString(age).isEmpty()) {
+                }
+                else if(ageText.isEmpty()) {
                     etRAge.setError(getString(R.string.error_age));
                     return;
                 } else if (email.isEmpty()) {
                     etREmail.setError(getString(R.string.error_email));
                     return;
-                } else {
-
+                }
+                else {
+                    int age = Integer.parseInt(ageText);
                     if (!pDialog.isShowing())
                         pDialog.setMessage("Registering...");
                     pDialog.show();

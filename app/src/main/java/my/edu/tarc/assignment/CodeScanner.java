@@ -1,6 +1,7 @@
 package my.edu.tarc.assignment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -26,13 +27,14 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
     public static final int REQUEST_ITEM_QUANTITY = 3;
     public static final String GET_QUANTITY = "my.tarc.edu.assignment.GET_QUANTITY";
     public static final String QUANTITY = "my.tarc.edu.assignment.QUANTITY";
+    ProgressDialog progressDialog;
     Item item;
     String content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_code__scanner);
-
+        progressDialog = new ProgressDialog(this);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 0);
         zXingScannerView = new ZXingScannerView(getApplicationContext());
@@ -50,6 +52,11 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
 
     @Override
     public void handleResult(Result result) {
+
+        if(!progressDialog.isShowing()){
+            progressDialog.setMessage("Scanning item....");
+        }
+        progressDialog.show();
         content = result.getText().toString();
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override

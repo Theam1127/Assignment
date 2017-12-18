@@ -1,6 +1,7 @@
 package my.edu.tarc.assignment;
 
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
@@ -26,11 +27,13 @@ import java.util.List;
 public class CheckoutCart extends AppCompatActivity {
     List<Item> cart;
     TextView textViewCheckoutTotal;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_cart);
         double total = 0.0;
+        progressDialog = new ProgressDialog(this);
         Intent intent = getIntent();
         Bundle checkout_cart = intent.getBundleExtra(AddItem.CHECKOUT_CART);
         cart = new ArrayList<Item>();
@@ -48,6 +51,9 @@ public class CheckoutCart extends AppCompatActivity {
     }
 
     public void confirmCheckout(View view){
+        if(!progressDialog.isShowing())
+            progressDialog.setMessage("Checking out...");
+        progressDialog.show();
         for(int a=0;a<cart.size();a++){
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
