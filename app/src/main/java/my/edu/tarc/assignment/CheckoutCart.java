@@ -41,7 +41,7 @@ public class CheckoutCart extends AppCompatActivity {
             cart_items.add(a + 1 + ". " + cart.get(a).toString());
             total+=cart.get(a).getPrice();
         }
-        textViewCheckoutTotal = (TextView)findViewById(R.id.textViewTotalCheckOut);
+        textViewCheckoutTotal = (TextView)findViewById(R.id.textViewCheckoutTotal);
         textViewCheckoutTotal.setText(String.format("RM %.2f", total));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, cart_items);
         listViewCheckOutCart.setAdapter(arrayAdapter);

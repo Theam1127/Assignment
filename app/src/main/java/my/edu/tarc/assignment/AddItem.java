@@ -113,7 +113,7 @@ public class AddItem extends Fragment {
                     Bundle checkout_cart = new Bundle();
                     checkout_cart.putSerializable(CHECKOUT_CART, (Serializable) cart_list);
                     intent.putExtra(CHECKOUT_CART, checkout_cart);
-                    startActivityForResult(intent,3);
+                    startActivityForResult(intent,REQUEST_CHECKOUT);
                 }
             }
         });
