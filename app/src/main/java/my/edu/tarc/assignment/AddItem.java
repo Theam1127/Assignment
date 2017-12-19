@@ -1,10 +1,13 @@
 package my.edu.tarc.assignment;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,12 +22,14 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 public class AddItem extends AppCompatActivity {
     public static final int REQUEST_CODE_CONTENT = 1;
@@ -37,8 +42,11 @@ public class AddItem extends AppCompatActivity {
     public static final String EDITED_ITEM = "my.edu.tarc.assignment.EDITEDITEM";
     public static final String CHECKOUT_CART = "my.edu.tarc.assignment.CHECKOUT";
     private static final String SAVE_ITEM_LIST = "my.edu.tarc.assignment.SAVEITEMLIST";
+    private static final String EXIT_TIME = "my.edu.tarc.assignment.EXITTIME";
     TextView textViewTotalPrice;
     ProgressDialog progressDialog;
+    SharedPreferences cartPreferences;
+    SharedPreferences.Editor editor;
     double total_price = 0.0;
     ListView cart;
     List<Item> cart_list = null;
@@ -52,8 +60,21 @@ public class AddItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         cart = (ListView)findViewById(R.id.listViewCart);
-        if(savedInstanceState!=null)
-            cart_list = (List<Item>)savedInstanceState.getSerializable(SAVE_ITEM_LIST);
+        cartPreferences = getPreferences(MODE_PRIVATE);
+        if(cartPreferences!=null) {
+            Long od = cartPreferences.getLong(EXIT_TIME, 0L);
+            Date oldDate = new Date(od);
+            Date currentDate = new Date();
+            if (currentDate.getDay() == oldDate.getDay() && currentDate.getMinutes() - oldDate.getMinutes() < 30) {
+                Gson gson = new Gson();
+                String fromJson = cartPreferences.getString(SAVE_ITEM_LIST, "");
+                cart_list = gson.fromJson(fromJson, cart_list.getClass());
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddItem.this);
+                builder.setMessage("Cart expired! You have left app closed more than 30 minutes!").setNegativeButton("Ok", null).create().show();
+                cart_list.clear();
+            }
+        }
         if(cart_list == null)
             cart_list = new ArrayList<Item>();
         arrayAdapter = new CartAdapter(cart_list, this);
@@ -137,11 +158,6 @@ public class AddItem extends AppCompatActivity {
         textViewTotalPrice.setText(String.format("%.2f", total_price));
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(SAVE_ITEM_LIST, (Serializable)cart_list);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -175,6 +191,8 @@ public class AddItem extends AppCompatActivity {
                 if (status.equals("SUCCESS")) {
                     cart_list.clear();
                     arrayAdapter.notifyDataSetChanged();
+                    editor.clear();
+                    editor.commit();
                 }
             }
         }
@@ -182,9 +200,8 @@ public class AddItem extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finish();
+            finish();
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -192,5 +209,21 @@ public class AddItem extends AppCompatActivity {
                 finish();
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if(cart_list!=null) {
+            editor = cartPreferences.edit();
+            Date exitTime = new Date();
+
+            Gson gson = new Gson();
+            String toJson = gson.toJson(cart_list);
+            editor.putString(SAVE_ITEM_LIST, toJson);
+            editor.putLong(EXIT_TIME, exitTime.getTime());
+            editor.commit();
+        }
+        super.onDestroy();
+
     }
 }

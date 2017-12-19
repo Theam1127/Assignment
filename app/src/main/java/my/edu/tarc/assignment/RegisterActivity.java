@@ -73,8 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 if (success == true) {
                                     Toast.makeText(getApplicationContext(), "Register successful", Toast.LENGTH_LONG).show();
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                    RegisterActivity.this.startActivity(intent);
+                                    finish();
                                 } else if (success == false) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                     builder.setMessage("Register Failed. Username/Email is already exist.").setNegativeButton("Retry", null).create().show();
@@ -101,8 +100,5 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+
 }

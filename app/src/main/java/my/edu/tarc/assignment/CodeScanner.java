@@ -112,8 +112,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
             finish();
         }
         else{
-            setResult(RESULT_CANCELED);
-            finish();
+            onBackPressed();
         }
     }
 
@@ -121,5 +120,14 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
     public void onBackPressed() {
         setResult(RESULT_CANCELED);
         finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return true;
     }
 }
