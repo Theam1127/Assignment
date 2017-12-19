@@ -1,5 +1,6 @@
 package my.edu.tarc.assignment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -71,10 +72,10 @@ public class MainPage extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_AddItem) {
-            
-            Fragment fragmentAddItem = new AddItem();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_main,fragmentAddItem).commit();
+            Intent intent = new Intent(this, AddItem.class);
+            startActivity(intent);
+            finish();
+
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 

@@ -89,6 +89,8 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if(progressDialog.isShowing())
+                    progressDialog.dismiss();
             }
         };
         ItemRequest itemRequest = new ItemRequest(content,responseListener);
@@ -96,30 +98,11 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
         queue.add(itemRequest);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = NavUtils.getParentActivityIntent(this);
-                intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                return(true);
-        }
-
-        return(super.onOptionsItemSelected(item));
-    }
-
-    @Override
-    public void onBackPressed(){
-        Intent intent = NavUtils.getParentActivityIntent(this);
-        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_ITEM_QUANTITY){
+        if(requestCode == REQUEST_ITEM_QUANTITY && resultCode!=RESULT_CANCELED){
             int quantity;
             quantity = data.getIntExtra(QUANTITY,0);
             Item newItem = new Item(item.getItemID(), item.getItemName(), quantity, quantity*item.getPrice());
@@ -128,5 +111,15 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
             setResult(AddItem.REQUEST_CODE_CONTENT,intent);
             finish();
         }
+        else{
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        finish();
     }
 }

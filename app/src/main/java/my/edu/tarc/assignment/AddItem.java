@@ -1,12 +1,13 @@
 package my.edu.tarc.assignment;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,7 +26,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-public class AddItem extends Fragment {
+public class AddItem extends AppCompatActivity {
     public static final int REQUEST_CODE_CONTENT = 1;
 
     public static final String NEW_ITEM = "my.edu.tarc.assignment.PRODUCTID";
@@ -44,34 +45,25 @@ public class AddItem extends Fragment {
     CartAdapter arrayAdapter = null;
     Item item = new Item();
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(SAVE_ITEM_LIST, cart.onSaveInstanceState());
-    }
+
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState!=null)
-            cart=savedInstanceState.getParcelable(SAVE_ITEM_LIST);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        View v = inflater.inflate(R.layout.fragment_add_item,container,false);
-        cart = (ListView)v.findViewById(R.id.listViewCart);
-        cart_list = new ArrayList<Item>();
-        arrayAdapter = new CartAdapter(cart_list,getActivity());
+        setContentView(R.layout.activity_add_item);
+        cart = (ListView)findViewById(R.id.listViewCart);
+        if(savedInstanceState!=null)
+            cart_list = (List<Item>)savedInstanceState.getSerializable(SAVE_ITEM_LIST);
+        if(cart_list == null)
+            cart_list = new ArrayList<Item>();
+        arrayAdapter = new CartAdapter(cart_list, this);
         cart.setAdapter(arrayAdapter);
-        progressDialog = new ProgressDialog(getActivity());
-        Button buttonAddItem = (Button)v.findViewById(R.id.buttonAddItem);
+        progressDialog = new ProgressDialog(this);
+        Button buttonAddItem = (Button)findViewById(R.id.buttonAddItem);
         buttonAddItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(getActivity(),CodeScanner.class);
+                Intent intent = new Intent(getBaseContext(), CodeScanner.class);
                 startActivityForResult(intent, REQUEST_CODE_CONTENT);
             }
         });
@@ -79,8 +71,9 @@ public class AddItem extends Fragment {
         cart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 if(!progressDialog.isShowing())
-                    progressDialog.setMessage("Please wait...");
+                    progressDialog.setMessage("Loading...");
                 progressDialog.show();
                 final Item editItem = cart_list.get(position);
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -93,7 +86,7 @@ public class AddItem extends Fragment {
                             item.setItemName(jsonResponse.getString("productName"));
                             item.setPrice(jsonResponse.getDouble("productPrice"));
                             item.setQuantity(jsonResponse.getInt("productQty"));
-                            Intent intent = new Intent(getActivity(), ItemDetail.class);
+                            Intent intent = new Intent(getBaseContext(), ItemDetail.class);
                             intent.putExtra(AddItem.EDIT_ITEM, editItem);
                             intent.putExtra(AddItem.DB_ITEM,item);
                             startActivityForResult(intent, REQUEST_ITEM_DETAIL);
@@ -103,31 +96,34 @@ public class AddItem extends Fragment {
                     }
                 };
                 ItemRequest itemRequest = new ItemRequest(editItem.getItemID(), responseListener);
-                RequestQueue queue = Volley.newRequestQueue(getActivity());
+                RequestQueue queue = Volley.newRequestQueue(getBaseContext());
                 queue.add(itemRequest);
+                if(progressDialog.isShowing())
+                    progressDialog.dismiss();
             }
         });
 
-        Button buttonCheckOut = (Button)v.findViewById(R.id.buttonCheckout);
+        Button buttonCheckOut = (Button)findViewById(R.id.buttonCheckout);
         buttonCheckOut.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(cart_list.isEmpty())
-                    Toast.makeText(getActivity(),"You have no items in your cart!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),"You have no items in your cart!", Toast.LENGTH_SHORT).show();
                 else {
                     if(!progressDialog.isShowing())
                         progressDialog.setMessage("Please wait...");
                     progressDialog.show();
-                    Intent intent = new Intent(getActivity(), CheckoutCart.class);
+                    Intent intent = new Intent(getBaseContext(), CheckoutCart.class);
                     Bundle checkout_cart = new Bundle();
                     checkout_cart.putSerializable(CHECKOUT_CART, (Serializable) cart_list);
                     intent.putExtra(CHECKOUT_CART, checkout_cart);
                     startActivityForResult(intent,REQUEST_CHECKOUT);
+                    if(progressDialog.isShowing())
+                        progressDialog.dismiss();
+
                 }
             }
         });
-
-        return v;
     }
 
 
@@ -137,45 +133,64 @@ public class AddItem extends Fragment {
         total_price = 0.0;
         for (int a = 0; a < cart_list.size(); a++)
             total_price += cart_list.get(a).getPrice();
-        textViewTotalPrice = (TextView) getActivity().findViewById(R.id.textViewTotalPrice);
+        textViewTotalPrice = (TextView)findViewById(R.id.textViewTotalPrice);
         textViewTotalPrice.setText(String.format("%.2f", total_price));
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVE_ITEM_LIST, (Serializable)cart_list);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_CONTENT){
-            item = (Item)data.getSerializableExtra(NEW_ITEM);
-            if(item!=null) {
-                boolean exist = false;
-                for (int a = 0; a < cart_list.size(); a++)
+        if(resultCode!=RESULT_CANCELED) {
+            if (requestCode == REQUEST_CODE_CONTENT) {
+                item = (Item) data.getSerializableExtra(NEW_ITEM);
+                if (item != null) {
+                    boolean exist = false;
+                    for (int a = 0; a < cart_list.size(); a++)
+                        if (cart_list.get(a).getItemID().equals(item.getItemID())) {
+                            exist = true;
+                            cart_list.get(a).setQuantity(cart_list.get(a).getQuantity() + item.getQuantity());
+                            cart_list.get(a).setPrice(cart_list.get(a).getPrice() + item.getPrice());
+                        }
+                    if (exist == false)
+                        cart_list.add(item);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            } else if (requestCode == REQUEST_ITEM_DETAIL) {
+                item = (Item) data.getSerializableExtra(EDITED_ITEM);
+                for (int a = 0; a < cart_list.size(); a++) {
                     if (cart_list.get(a).getItemID().equals(item.getItemID())) {
-                        exist = true;
-                        cart_list.get(a).setQuantity(cart_list.get(a).getQuantity() + item.getQuantity());
-                        cart_list.get(a).setPrice(cart_list.get(a).getPrice() + item.getPrice());
+                        cart_list.get(a).setQuantity(item.getQuantity());
+                        cart_list.get(a).setPrice(item.getPrice());
                     }
-                if (exist == false)
-                    cart_list.add(item);
+                }
                 arrayAdapter.notifyDataSetChanged();
-            }
-    }
-        else if(requestCode == REQUEST_ITEM_DETAIL){
-            item = (Item)data.getSerializableExtra(EDITED_ITEM);
-            for(int a=0;a<cart_list.size();a++) {
-                if (cart_list.get(a).getItemID().equals(item.getItemID())) {
-                    cart_list.get(a).setQuantity(item.getQuantity());
-                    cart_list.get(a).setPrice(item.getPrice());
+            } else if (requestCode == REQUEST_CHECKOUT) {
+                String status = data.getStringExtra(CHECKOUT_CART);
+                if (status.equals("SUCCESS")) {
+                    cart_list.clear();
+                    arrayAdapter.notifyDataSetChanged();
                 }
             }
-            arrayAdapter.notifyDataSetChanged();
-        } else if (requestCode == REQUEST_CHECKOUT) {
-            String status = data.getStringExtra(CHECKOUT_CART);
-            if(status.equals("SUCCESS")) {
-                cart_list.clear();
-                arrayAdapter.notifyDataSetChanged();
-            }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
     }
 }

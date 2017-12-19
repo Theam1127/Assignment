@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
                     if (!pDialog.isShowing())
                         pDialog.setMessage("Logging in...");
                     pDialog.show();
-
                     Response.Listener<String> responseListener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
