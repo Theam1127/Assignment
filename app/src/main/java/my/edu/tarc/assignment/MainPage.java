@@ -74,7 +74,6 @@ public class MainPage extends AppCompatActivity
         if (id == R.id.nav_AddItem) {
             Intent intent = new Intent(this, AddItem.class);
             startActivity(intent);
-            finish();
 
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {

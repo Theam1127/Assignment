@@ -2,6 +2,7 @@ package my.edu.tarc.assignment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                String username = etUsername.getText().toString();
+                final String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
 
                 if(username.isEmpty()){
@@ -68,8 +69,11 @@ public class LoginActivity extends AppCompatActivity {
                                     //Keep user login using sharedPreference
                                     //can refer link below
                                     //https://stackoverflow.com/questions/12744337/how-to-keep-android-applications-always-be-logged-in-state
-
                                     Intent loginIntent = new Intent(LoginActivity.this, MainPage.class);
+                                    SharedPreferences userPreference = getSharedPreferences("CURRENT_USER",MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = userPreference.edit();
+                                    editor.putString("LOGIN_USER", username);
+                                    editor.commit();
                                     LoginActivity.this.startActivity(loginIntent);
                                     finish();
                                 } else {

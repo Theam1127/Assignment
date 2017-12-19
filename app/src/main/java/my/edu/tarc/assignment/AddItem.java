@@ -1,18 +1,13 @@
 package my.edu.tarc.assignment;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,11 +37,11 @@ public class AddItem extends AppCompatActivity {
     public static final int REQUEST_ITEM_DETAIL = 2;
     public static final String EDITED_ITEM = "my.edu.tarc.assignment.EDITEDITEM";
     public static final String CHECKOUT_CART = "my.edu.tarc.assignment.CHECKOUT";
-    private static final String SAVE_ITEM_LIST = "my.edu.tarc.assignment.SAVEITEMLIST";
-    private static final String EXIT_TIME = "my.edu.tarc.assignment.EXITTIME";
+    private static String SAVE_ITEM_LIST = "my.edu.tarc.assignment.SAVE_ITEM_LIST";
+    private static String EXIT_TIME = "my.edu.tarc.assignment.EXIT_TIME";
     TextView textViewTotalPrice;
     ProgressDialog progressDialog;
-    SharedPreferences cartPreferences;
+    SharedPreferences cartPreferences, userPreferences;
     SharedPreferences.Editor editor;
     double total_price = 0.0;
     ListView cart;
@@ -60,15 +56,19 @@ public class AddItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
         cart = (ListView)findViewById(R.id.listViewCart);
-        cartPreferences = getPreferences(MODE_PRIVATE);
-        if(cartPreferences!=null) {
-            Long od = cartPreferences.getLong(EXIT_TIME, 0L);
+        Intent intent = getIntent();
+        userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+        String username = userPreferences.getString("LOGIN_USER", "");
+        cartPreferences = getSharedPreferences(username, MODE_PRIVATE);
+
+        Long od = cartPreferences.getLong(EXIT_TIME, 0L);
+        if(od!=0){
             Date oldDate = new Date(od);
             Date currentDate = new Date();
             if (currentDate.getDay() == oldDate.getDay() && currentDate.getMinutes() - oldDate.getMinutes() < 30) {
                 Gson gson = new Gson();
                 String fromJson = cartPreferences.getString(SAVE_ITEM_LIST, "");
-                cart_list = gson.fromJson(fromJson, cart_list.getClass());
+                cart_list = gson.fromJson(fromJson, new TypeToken<List<Item>>(){}.getType());
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddItem.this);
                 builder.setMessage("Cart expired! You have left app closed more than 30 minutes!").setNegativeButton("Ok", null).create().show();
@@ -86,7 +86,7 @@ public class AddItem extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), CodeScanner.class);
                 startActivityForResult(intent, REQUEST_CODE_CONTENT);
-            }
+        }
         });
 
         cart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -189,10 +189,11 @@ public class AddItem extends AppCompatActivity {
             } else if (requestCode == REQUEST_CHECKOUT) {
                 String status = data.getStringExtra(CHECKOUT_CART);
                 if (status.equals("SUCCESS")) {
+                    editor = cartPreferences.edit();
                     cart_list.clear();
-                    arrayAdapter.notifyDataSetChanged();
                     editor.clear();
                     editor.commit();
+                    arrayAdapter.notifyDataSetChanged();
                 }
             }
         }
