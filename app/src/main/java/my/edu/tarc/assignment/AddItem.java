@@ -65,14 +65,18 @@ public class AddItem extends AppCompatActivity {
         if(od!=0){
             Date oldDate = new Date(od);
             Date currentDate = new Date();
-            if (currentDate.getDay() == oldDate.getDay() && currentDate.getMinutes() - oldDate.getMinutes() < 30) {
+            int hours = currentDate.getHours() - oldDate.getHours();
+            int minutes = (currentDate.getMinutes()+(hours*60)) - oldDate.getMinutes();
+            if (currentDate.getDay() == oldDate.getDay() && minutes < 30) {
                 Gson gson = new Gson();
                 String fromJson = cartPreferences.getString(SAVE_ITEM_LIST, "");
                 cart_list = gson.fromJson(fromJson, new TypeToken<List<Item>>(){}.getType());
-            } else {
+            } else if(currentDate.getDay()>oldDate.getDay() || minutes >= 30){
+                SharedPreferences.Editor editor = cartPreferences.edit();
+                editor.clear();
+                editor.commit();
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddItem.this);
                 builder.setMessage("Cart expired! You have left app closed more than 30 minutes!").setNegativeButton("Ok", null).create().show();
-                cart_list.clear();
             }
         }
         if(cart_list == null)
