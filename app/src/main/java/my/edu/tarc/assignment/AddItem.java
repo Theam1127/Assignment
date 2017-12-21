@@ -216,8 +216,10 @@ public class AddItem extends AppCompatActivity {
         return true;
     }
 
+
+
     @Override
-    protected void onDestroy() {
+    public void onStop() {
         if(cart_list!=null) {
             editor = cartPreferences.edit();
             Date exitTime = new Date();
@@ -228,7 +230,7 @@ public class AddItem extends AppCompatActivity {
             editor.putLong(EXIT_TIME, exitTime.getTime());
             editor.commit();
         }
-        super.onDestroy();
+        super.onStop();
 
     }
 }
