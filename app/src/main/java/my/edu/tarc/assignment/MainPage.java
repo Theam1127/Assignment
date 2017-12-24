@@ -58,6 +58,15 @@ public class MainPage extends AppCompatActivity
     }
 
     @Override
+    public void onDestroy(){
+        userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+        SharedPreferences.Editor editor = userPreferences.edit();
+        editor.clear();
+        editor.commit();
+        super.onDestroy();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_page, menu);

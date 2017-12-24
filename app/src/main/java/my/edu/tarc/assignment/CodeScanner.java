@@ -2,6 +2,7 @@ package my.edu.tarc.assignment;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -60,7 +61,6 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
             progressDialog.setMessage("Scanning item....");
         }
         progressDialog.show();
-        progressDialog.setCancelable(false);
         content = result.getText().toString();
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override

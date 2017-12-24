@@ -88,12 +88,15 @@ public class AddItem extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddItem.this);
-                builder.setMessage("Cart expired! You have left app closed more than 30 minutes!").setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                }).create().show();
+                builder.setMessage("Cart expired! You have left app closed more than 30 minutes!").setNegativeButton("Ok", null).
+                        setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                Intent intent = new Intent(AddItem.this, SelectShop.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).create().show();
             }
         }
         if(cart_list == null)
