@@ -30,6 +30,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
     ProgressDialog progressDialog;
     Item item;
     String content;
+    String shopID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,8 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
         progressDialog = new ProgressDialog(this);
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 0);
+        Intent intent = getIntent();
+        shopID = intent.getStringExtra(AddItem.PUT_SHOP);
         zXingScannerView = new ZXingScannerView(getApplicationContext());
         setContentView(zXingScannerView);
         zXingScannerView.setResultHandler(this);
@@ -57,6 +60,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
             progressDialog.setMessage("Scanning item....");
         }
         progressDialog.show();
+        progressDialog.setCancelable(false);
         content = result.getText().toString();
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
@@ -70,7 +74,6 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                         item.setItemName(jsonResponse.getString("productName"));
                         item.setPrice(jsonResponse.getDouble("productPrice"));
                         item.setQuantity(jsonResponse.getInt("productQty"));
-
                         //connect database to check existence of product (DONE)
                         //if not exist, display error message and jump back to AddItem (DONE)
                         //If same product already in the cart, make user add quantity instead.(DONE)
@@ -93,7 +96,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                     progressDialog.dismiss();
             }
         };
-        ItemRequest itemRequest = new ItemRequest(content,responseListener);
+        ItemRequest itemRequest = new ItemRequest(content, shopID,responseListener);
         RequestQueue queue = Volley.newRequestQueue(CodeScanner.this);
         queue.add(itemRequest);
     }
@@ -105,7 +108,7 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
         if(requestCode == REQUEST_ITEM_QUANTITY && resultCode!=RESULT_CANCELED){
             int quantity;
             quantity = data.getIntExtra(QUANTITY,0);
-            Item newItem = new Item(item.getItemID(), item.getItemName(), quantity, quantity*item.getPrice());
+            Item newItem = new Item(item.getItemID(), item.getItemName(), quantity, quantity*item.getPrice(), shopID);
             Intent intent = new Intent();
             intent.putExtra(AddItem.NEW_ITEM,newItem);
             setResult(AddItem.REQUEST_CODE_CONTENT,intent);

@@ -23,34 +23,35 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddItem"
+        <activity
+            android:name=".AddItem"
+            android:alwaysRetainTaskState="true"
             android:parentActivityName=".MainPage"
-            android:screenOrientation="portrait"
-            android:alwaysRetainTaskState="true"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RegisterActivity"
             android:parentActivityName=".LoginActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainPage"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CodeScanner"
             android:parentActivityName=".AddItem"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ItemDetail"
             android:parentActivityName=".AddItem"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CheckoutCart"
+            android:parentActivityName=".AddItem"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".SelectShop"
             android:screenOrientation="portrait"
-            android:parentActivityName=".AddItem"/>
+            android:parentActivityName=".MainPage"></activity>
     </application>
 
 </manifest>

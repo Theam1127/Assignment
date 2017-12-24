@@ -1,11 +1,14 @@
 package my.edu.tarc.assignment;
 
-import android.app.ProgressDialog;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,10 +40,11 @@ public class AddItem extends AppCompatActivity {
     public static final int REQUEST_ITEM_DETAIL = 2;
     public static final String EDITED_ITEM = "my.edu.tarc.assignment.EDITEDITEM";
     public static final String CHECKOUT_CART = "my.edu.tarc.assignment.CHECKOUT";
-    private static String SAVE_ITEM_LIST = "my.edu.tarc.assignment.SAVE_ITEM_LIST";
-    private static String EXIT_TIME = "my.edu.tarc.assignment.EXIT_TIME";
+    public static final String SAVE_ITEM_LIST = "my.edu.tarc.assignment.SAVE_ITEM_LIST";
+    private static final String EXIT_TIME = "my.edu.tarc.assignment.EXIT_TIME";
+    public static final String GET_SHOP = "my.edu.tarc.assignment.GET_SHOP";
+    public static final String PUT_SHOP = "my.edu.tarc.assignment.PUT_SHOP";
     TextView textViewTotalPrice;
-    ProgressDialog progressDialog;
     SharedPreferences cartPreferences, userPreferences;
     SharedPreferences.Editor editor;
     double total_price = 0.0;
@@ -48,6 +52,12 @@ public class AddItem extends AppCompatActivity {
     List<Item> cart_list = null;
     CartAdapter arrayAdapter = null;
     Item item = new Item();
+    String shopID;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_item, menu);
+        return true;
+    }
 
 
 
@@ -60,35 +70,42 @@ public class AddItem extends AppCompatActivity {
         userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
         String username = userPreferences.getString("LOGIN_USER", "");
         cartPreferences = getSharedPreferences(username, MODE_PRIVATE);
-
+        shopID = intent.getStringExtra(SelectShop.INTENT_SHOPID);
         Long od = cartPreferences.getLong(EXIT_TIME, 0L);
-        if(od!=0){
+        if (od != 0) {
             Date oldDate = new Date(od);
             Date currentDate = new Date();
             int hours = currentDate.getHours() - oldDate.getHours();
-            int minutes = (currentDate.getMinutes()+(hours*60)) - oldDate.getMinutes();
+            int minutes = (currentDate.getMinutes() + (hours * 60)) - oldDate.getMinutes();
             if (currentDate.getDay() == oldDate.getDay() && minutes < 30) {
                 Gson gson = new Gson();
                 String fromJson = cartPreferences.getString(SAVE_ITEM_LIST, "");
-                cart_list = gson.fromJson(fromJson, new TypeToken<List<Item>>(){}.getType());
-            } else if(currentDate.getDay()>oldDate.getDay() || minutes >= 30){
+                cart_list = gson.fromJson(fromJson, new TypeToken<List<Item>>() {
+                }.getType());
+                shopID = cartPreferences.getString(GET_SHOP, "");
+            } else if (currentDate.getDay() > oldDate.getDay() || minutes >= 30) {
                 SharedPreferences.Editor editor = cartPreferences.edit();
                 editor.clear();
                 editor.commit();
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddItem.this);
-                builder.setMessage("Cart expired! You have left app closed more than 30 minutes!").setNegativeButton("Ok", null).create().show();
+                builder.setMessage("Cart expired! You have left app closed more than 30 minutes!").setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).create().show();
             }
         }
         if(cart_list == null)
             cart_list = new ArrayList<Item>();
         arrayAdapter = new CartAdapter(cart_list, this);
         cart.setAdapter(arrayAdapter);
-        progressDialog = new ProgressDialog(this);
         Button buttonAddItem = (Button)findViewById(R.id.buttonAddItem);
         buttonAddItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(getBaseContext(), CodeScanner.class);
+                intent.putExtra(PUT_SHOP, shopID);
                 startActivityForResult(intent, REQUEST_CODE_CONTENT);
         }
         });
@@ -96,10 +113,6 @@ public class AddItem extends AppCompatActivity {
         cart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if(!progressDialog.isShowing())
-                    progressDialog.setMessage("Loading...");
-                progressDialog.show();
                 final Item editItem = cart_list.get(position);
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -120,11 +133,9 @@ public class AddItem extends AppCompatActivity {
                         }
                     }
                 };
-                ItemRequest itemRequest = new ItemRequest(editItem.getItemID(), responseListener);
+                ItemRequest itemRequest = new ItemRequest(editItem.getItemID(),shopID, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(getBaseContext());
                 queue.add(itemRequest);
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
             }
         });
 
@@ -135,17 +146,11 @@ public class AddItem extends AppCompatActivity {
                 if(cart_list.isEmpty())
                     Toast.makeText(getBaseContext(),"You have no items in your cart!", Toast.LENGTH_SHORT).show();
                 else {
-                    if(!progressDialog.isShowing())
-                        progressDialog.setMessage("Please wait...");
-                    progressDialog.show();
                     Intent intent = new Intent(getBaseContext(), CheckoutCart.class);
                     Bundle checkout_cart = new Bundle();
                     checkout_cart.putSerializable(CHECKOUT_CART, (Serializable) cart_list);
                     intent.putExtra(CHECKOUT_CART, checkout_cart);
                     startActivityForResult(intent,REQUEST_CHECKOUT);
-                    if(progressDialog.isShowing())
-                        progressDialog.dismiss();
-
                 }
             }
         });
@@ -205,13 +210,48 @@ public class AddItem extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(!cart_list.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddItem.this);
+            builder.setMessage("Do you want to empty your cart before you leave?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    cart_list.clear();
+                    arrayAdapter.notifyDataSetChanged();
+                    finish();
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddItem.this);
+                    builder1.setTitle("Important!").setIcon(R.drawable.ic_error_outline_red_24dp).setMessage("Do not leave your cart with item for more than 30 minutes").setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).create().show();
+                }
+            }).setNeutralButton("Cancel", null).create().show();
+        }
+        else
             finish();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                onBackPressed();
+                break;
+            case R.id.emptyCart:
+                final AlertDialog.Builder builder = new AlertDialog.Builder(AddItem.this);
+                builder.setMessage("Are you sure you want to empty your cart?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cart_list.clear();
+                        arrayAdapter.notifyDataSetChanged();
+                        onResume();
+                    }
+                }).setNegativeButton("No", null).create().show();
+
         }
         return true;
     }
@@ -220,14 +260,18 @@ public class AddItem extends AppCompatActivity {
 
     @Override
     public void onStop() {
-        if(cart_list!=null) {
-            editor = cartPreferences.edit();
+        editor = cartPreferences.edit();
+        if(!cart_list.isEmpty()) {
             Date exitTime = new Date();
-
             Gson gson = new Gson();
             String toJson = gson.toJson(cart_list);
             editor.putString(SAVE_ITEM_LIST, toJson);
             editor.putLong(EXIT_TIME, exitTime.getTime());
+            editor.putString(GET_SHOP,shopID);
+            editor.commit();
+        }
+        else{
+            editor.clear();
             editor.commit();
         }
         super.onStop();

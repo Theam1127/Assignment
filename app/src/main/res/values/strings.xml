@@ -43,4 +43,7 @@
     <string name="error_password">Please enter password</string>
     <string name="error_age">Please enter your age</string>
     <string name="error_email">Please enter an email</string>
+    <string name="emptyCart">Empty Cart</string>
+    <string name="shop_name">Shop Name</string>
+    <string name="select_shop">Enter Shop Name:</string>
 </resources>

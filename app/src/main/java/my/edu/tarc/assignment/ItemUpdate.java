@@ -15,11 +15,12 @@ public class ItemUpdate extends StringRequest {
         private static final String ITEM_REQUEST_URL = "https://yongjin97.000webhostapp.com/UpdateProduct.php";
         private Map<String, String> params;
 
-        public ItemUpdate(String itemID, int itemQty, Response.Listener<String> listener){
+        public ItemUpdate(String itemID, int itemQty, String shopID, Response.Listener<String> listener){
             super(Request.Method.POST, ITEM_REQUEST_URL, listener, null);
             params = new HashMap<>();
             params.put("productID", itemID);
             params.put("productQty", Integer.toString(itemQty));
+            params.put("shopID", shopID);
         }
 
         @Override

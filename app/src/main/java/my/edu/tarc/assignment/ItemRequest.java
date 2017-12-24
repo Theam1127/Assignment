@@ -15,10 +15,11 @@ public class ItemRequest extends StringRequest{
     private static final String ITEM_REQUEST_URL = "https://yongjin97.000webhostapp.com/SelectProduct.php";
     private Map<String, String> params;
 
-    public ItemRequest(String itemID, Response.Listener<String> listener){
+    public ItemRequest(String itemID, String shopID, Response.Listener<String> listener){
         super(Request.Method.POST, ITEM_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("productID", itemID);
+        params.put("shopID", shopID);
     }
 
     @Override

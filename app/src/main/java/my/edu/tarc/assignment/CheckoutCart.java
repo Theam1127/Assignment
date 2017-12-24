@@ -54,12 +54,13 @@ public class CheckoutCart extends AppCompatActivity {
         if(!progressDialog.isShowing())
             progressDialog.setMessage("Checking out...");
         progressDialog.show();
+        progressDialog.setCancelable(false);
         for(int a=0;a<cart.size();a++){
             Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {}
             };
-            ItemUpdate itemUpdate = new ItemUpdate(cart.get(a).getItemID(),cart.get(a).getQuantity(), responseListener);
+            ItemUpdate itemUpdate = new ItemUpdate(cart.get(a).getItemID(),cart.get(a).getQuantity(), cart.get(a).getShopID(), responseListener);
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(itemUpdate);
         }

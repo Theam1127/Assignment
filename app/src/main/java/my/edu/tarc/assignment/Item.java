@@ -12,16 +12,26 @@ public class Item implements Serializable {
     String itemName;
     int quantity;
     double price;
+    String shopID;
 
     public Item(){
 
     }
 
-    public Item(String itemID, String itemName, int quantity, double price) {
+    public Item(String itemID, String itemName, int quantity, double price, String shopID) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.quantity = quantity;
         this.price = price;
+        this.shopID = shopID;
+    }
+
+    public String getShopID() {
+        return shopID;
+    }
+
+    public void setShopID(String shopID) {
+        this.shopID = shopID;
     }
 
     public String getItemID() {
