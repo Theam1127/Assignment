@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -25,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         TextView tvRegister = (TextView)findViewById(R.id.tvRegister);
         final EditText etUsername = (EditText)findViewById(R.id.etUsername);
         final EditText etPassword = (EditText)findViewById(R.id.etPassword);
@@ -66,13 +66,12 @@ public class LoginActivity extends AppCompatActivity {
                                 boolean success = jsonResponse.getBoolean("success");
 
                                 if (success) {
-                                    //Keep user login using sharedPreference
-                                    //can refer link below
-                                    //https://stackoverflow.com/questions/12744337/how-to-keep-android-applications-always-be-logged-in-state
+                                    double credit = jsonResponse.getDouble("credit");
                                     Intent loginIntent = new Intent(LoginActivity.this, MainPage.class);
                                     SharedPreferences userPreference = getSharedPreferences("CURRENT_USER",MODE_PRIVATE);
                                     SharedPreferences.Editor editor = userPreference.edit();
                                     editor.putString("LOGIN_USER", username);
+                                    editor.putString("CURRENT_CREDIT", String.format("%.2f",credit));
                                     editor.commit();
                                     LoginActivity.this.startActivity(loginIntent);
                                     finish();

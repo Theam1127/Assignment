@@ -15,11 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 public class MainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences userPreferences, cartPreferences;
+    TextView textViewUserName, textViewCurrentCredit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +38,14 @@ public class MainPage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+        View header = navigationView.getHeaderView(0);
+        textViewUserName = (TextView)header.findViewById(R.id.TextViewUserName);
+        textViewCurrentCredit = (TextView)header.findViewById(R.id.textViewCurrentCredit);
+        textViewCurrentCredit.setText("Wallet: "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
+        textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous"));
     }
+
 
     @Override
     public void onBackPressed() {
@@ -88,6 +98,7 @@ public class MainPage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -107,7 +118,7 @@ public class MainPage extends AppCompatActivity
                 intent.putExtra(SelectShop.INTENT_SHOPID, shopID);
             }
             startActivity(intent);
-
+            item.setChecked(false);
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -124,5 +135,12 @@ public class MainPage extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        textViewCurrentCredit.setText("Wallet: "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
+        textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous"));
     }
 }

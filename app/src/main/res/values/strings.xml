@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Assignment</string>
+    <string name="app_name">Easy Shop</string>
     <string name="confirm">Confirm</string>
     <string name="total">Total:</string>
     <string name="add_item">Add Item</string>
@@ -13,7 +13,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="cart">Your Cart</string>
+    <string name="cart">Start Shopping</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -36,7 +36,7 @@
     <string name="birthday">Birthday</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="register">Register</string>
+    <string name="register"><u>Register</u></string>
     <string name="welcome">Welcome</string>
     <string name="gender">Gender:</string>
     <string name="error_username">Please enter username</string>
@@ -46,4 +46,6 @@
     <string name="emptyCart">Empty Cart</string>
     <string name="shop_name">Shop Name</string>
     <string name="select_shop">Enter Shop Name:</string>
+    <string name="logo_text">Easy Shop</string>
+    <string name="startup_message">Easy Shop, shop as easy as you want.</string>
 </resources>
