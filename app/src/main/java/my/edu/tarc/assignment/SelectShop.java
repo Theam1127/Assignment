@@ -90,6 +90,8 @@ public class SelectShop extends AppCompatActivity {
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if(s.length()==0)
+                                autoCompleteTextViewShop.showDropDown();
                         }
 
                         @Override

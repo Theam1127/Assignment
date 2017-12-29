@@ -86,8 +86,13 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                     }
                     else{
                         AlertDialog.Builder builder = new AlertDialog.Builder(CodeScanner.this);
-                        builder.setMessage("Item not exist!").setNegativeButton("Retry", null).create().show();
-                        zXingScannerView.resumeCameraPreview(CodeScanner.this);
+                        builder.setMessage("Item not exist!").setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                zXingScannerView.resumeCameraPreview(CodeScanner.this);
+                            }
+                        }).create().show();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
