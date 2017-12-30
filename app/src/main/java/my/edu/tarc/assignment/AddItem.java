@@ -206,6 +206,7 @@ public class AddItem extends AppCompatActivity {
                     editor.clear();
                     editor.commit();
                     arrayAdapter.notifyDataSetChanged();
+                    finish();
                 }
             }
         }

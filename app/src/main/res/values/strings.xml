@@ -48,4 +48,7 @@
     <string name="select_shop">Enter Shop Name:</string>
     <string name="logo_text">Easy Shop</string>
     <string name="startup_message">Easy Shop, shop as easy as you want.</string>
+    <string name="top_up">Top Up</string>
+    <string name="transfer_credit">Transfer Credit</string>
+    <string name="log_out">Logout</string>
 </resources>

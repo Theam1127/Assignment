@@ -30,6 +30,7 @@
         android:id="@+id/textViewCurrentCredit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
 

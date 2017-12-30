@@ -35,7 +35,6 @@ public class MainPage extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
@@ -62,6 +61,7 @@ public class MainPage extends AppCompatActivity
                     editor.clear();
                     editor.commit();
                     finish();
+                    System.exit(0);
                 }
             }).setNegativeButton("No", null).create().show();
         }
@@ -104,34 +104,42 @@ public class MainPage extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        item.setCheckable(false);
         if (id == R.id.nav_AddItem) {
             userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
             String username = userPreferences.getString("LOGIN_USER", "");
             cartPreferences = getSharedPreferences(username, MODE_PRIVATE);
             Intent intent;
-            String shopID = cartPreferences.getString(AddItem.GET_SHOP,"");
-            if(shopID.isEmpty())
+            String shopID = cartPreferences.getString(AddItem.GET_SHOP, "");
+            if (shopID.isEmpty())
                 intent = new Intent(this, SelectShop.class);
             else {
                 intent = new Intent(this, AddItem.class);
                 intent.putExtra(SelectShop.INTENT_SHOPID, shopID);
             }
             startActivity(intent);
-            item.setChecked(false);
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
+        else if(id == R.id.nav_topup){
+        }
+        else if(id== R.id.nav_transfer){
+        }
 
+        else if(id==R.id.nav_logout){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Logout your account?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = userPreferences.edit();
+                    editor.clear();
+                    editor.commit();
+                    Intent intent = new Intent(MainPage.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }).setNegativeButton("No", null).create().show();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -140,7 +148,7 @@ public class MainPage extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        textViewCurrentCredit.setText("Wallet: "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
+        textViewCurrentCredit.setText("Wallet: RM "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
         textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous"));
     }
 }

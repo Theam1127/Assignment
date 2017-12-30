@@ -2,9 +2,12 @@ package my.edu.tarc.assignment;
 
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -28,11 +31,13 @@ public class CheckoutCart extends AppCompatActivity {
     List<Item> cart;
     TextView textViewCheckoutTotal;
     ProgressDialog progressDialog;
+    SharedPreferences userPreference;
+    double total;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_cart);
-        double total = 0.0;
+        total = 0.0;
         progressDialog = new ProgressDialog(this);
         Intent intent = getIntent();
         Bundle checkout_cart = intent.getBundleExtra(AddItem.CHECKOUT_CART);
@@ -51,24 +56,61 @@ public class CheckoutCart extends AppCompatActivity {
     }
 
     public void confirmCheckout(View view){
-        if(!progressDialog.isShowing())
-            progressDialog.setMessage("Checking out...");
-        progressDialog.show();
         progressDialog.setCancelable(false);
-        for(int a=0;a<cart.size();a++){
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
+        userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+        double userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));
+        String username = userPreference.getString("LOGIN_USER", "");
+        if(userCredit>=total) {
+            if (!progressDialog.isShowing())
+                progressDialog.setMessage("Checking out...");
+            progressDialog.show();
+            userCredit -= total;
+            SharedPreferences.Editor editor = userPreference.edit();
+            editor.putString("CURRENT_CREDIT", String.format("%.2f", userCredit));
+            editor.commit();
+            Response.Listener<String> responseListenerCheckout = new Response.Listener<String>(){
                 @Override
-                public void onResponse(String response) {}
+                public void onResponse(String response) {
+                    for (int a = 0; a < cart.size(); a++) {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Intent intent = new Intent();
+                                intent.putExtra(AddItem.CHECKOUT_CART, "SUCCESS");
+                                setResult(AddItem.REQUEST_CHECKOUT, intent);
+                                Toast.makeText(CheckoutCart.this, "Checkout Successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                                if(progressDialog.isShowing())
+                                    progressDialog.dismiss();
+                            }
+                        };
+                        ItemUpdate itemUpdate = new ItemUpdate(cart.get(a).getItemID(), cart.get(a).getQuantity(), cart.get(a).getShopID(), responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(CheckoutCart.this);
+                        queue.add(itemUpdate);
+                    }
+                }
             };
-            ItemUpdate itemUpdate = new ItemUpdate(cart.get(a).getItemID(),cart.get(a).getQuantity(), cart.get(a).getShopID(), responseListener);
-            RequestQueue queue = Volley.newRequestQueue(this);
-            queue.add(itemUpdate);
+            CheckoutRequest checkoutRequest = new CheckoutRequest(total, username, responseListenerCheckout);
+            RequestQueue queue = Volley.newRequestQueue(CheckoutCart.this);
+            queue.add(checkoutRequest);
+
+
         }
-        Intent intent = new Intent();
-        intent.putExtra(AddItem.CHECKOUT_CART, "SUCCESS");
-        setResult(AddItem.REQUEST_CHECKOUT, intent);
-        Toast.makeText(this,"Checkout Successfully",Toast.LENGTH_SHORT).show();
-        finish();
+        else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(CheckoutCart.this);
+            builder.setMessage("You have no enough credit to pay the purchase! Do you want to top up now?").setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(CheckoutCart.this, "Checkout failed", Toast.LENGTH_SHORT).show();
+                    onBackPressed();
+                }
+            }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //redirect to top up page
+                }
+            }).create().show();
+        }
     }
 
     @Override
