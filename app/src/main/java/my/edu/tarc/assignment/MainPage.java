@@ -108,17 +108,30 @@ public class MainPage extends AppCompatActivity
         if (id == R.id.nav_AddItem) {
             userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
             String username = userPreferences.getString("LOGIN_USER", "");
-            cartPreferences = getSharedPreferences(username, MODE_PRIVATE);
-            Intent intent;
-            String shopID = cartPreferences.getString(AddItem.GET_SHOP, "");
-            if (shopID.isEmpty())
-                intent = new Intent(this, SelectShop.class);
-            else {
-                intent = new Intent(this, AddItem.class);
-                intent.putExtra(SelectShop.INTENT_SHOPID, shopID);
+            double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT", "0.00"));
+            AlertDialog.Builder builder;
+            if(credit<10) {
+                builder = new AlertDialog.Builder(MainPage.this);
+                builder.setMessage("You should have minimum RM 10.00 in your wallet in order to start shopping! Do you want to top up now?").
+                        setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //redirect to topup page
+                            }
+                        }).setNegativeButton("No", null).create().show();
             }
-            startActivity(intent);
-
+            else {
+                cartPreferences = getSharedPreferences(username, MODE_PRIVATE);
+                Intent intent;
+                String shopID = cartPreferences.getString(AddItem.GET_SHOP, "");
+                if (shopID.isEmpty())
+                    intent = new Intent(this, SelectShop.class);
+                else {
+                    intent = new Intent(this, AddItem.class);
+                    intent.putExtra(SelectShop.INTENT_SHOPID, shopID);
+                }
+                startActivity(intent);
+            }
         }
         else if(id == R.id.nav_topup){
         }
