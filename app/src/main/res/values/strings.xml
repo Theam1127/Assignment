@@ -51,4 +51,7 @@
     <string name="top_up">Top Up</string>
     <string name="transfer_credit">Transfer Credit</string>
     <string name="log_out">Logout</string>
+    <string name="or">-- OR --</string>
+    <string name="enter_code">Enter Barcode</string>
+    <string name="scan_item_string">Scan the Barcode on Product</string>
 </resources>

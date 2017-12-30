@@ -12,6 +12,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,10 +45,70 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 0);
         Intent intent = getIntent();
         shopID = intent.getStringExtra(AddItem.PUT_SHOP);
-        zXingScannerView = new ZXingScannerView(getApplicationContext());
-        setContentView(zXingScannerView);
+        zXingScannerView = (ZXingScannerView)findViewById(R.id.zxingScanner);
         zXingScannerView.setResultHandler(this);
         zXingScannerView.startCamera();
+        final EditText editTextBarcode = (EditText)findViewById(R.id.editTextBarcode);
+        Button buttonBarCode = (Button)findViewById(R.id.buttonBarcode);
+        buttonBarCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String barcode = editTextBarcode.getText().toString();
+                if(barcode.isEmpty()){
+                    editTextBarcode.setError("Please enter bar code");
+                    return;
+                }
+                zXingScannerView.stopCameraPreview();
+                if(!progressDialog.isShowing()){
+                    progressDialog.setMessage("Scanning item....");
+                }
+                progressDialog.show();
+                content = editTextBarcode.getText().toString();
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if(success==true){
+                                item = new Item();
+                                item.setItemID(jsonResponse.getString("productID"));
+                                item.setItemName(jsonResponse.getString("productName"));
+                                item.setPrice(jsonResponse.getDouble("productPrice"));
+                                item.setQuantity(jsonResponse.getInt("productQty"));
+                                //connect database to check existence of product (DONE)
+                                //if not exist, display error message and jump back to AddItem (DONE)
+                                //If same product already in the cart, make user add quantity instead.(DONE)
+
+                                //else
+                                //store product details in Item (DONE)
+                                Intent intent = new Intent(CodeScanner.this,ItemDetail.class);
+                                intent.putExtra(GET_QUANTITY,item);
+                                CodeScanner.this.startActivityForResult(intent, REQUEST_ITEM_QUANTITY);
+                            }
+                            else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CodeScanner.this);
+                                builder.setMessage("Item not exist!").setNegativeButton("Retry",null).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        zXingScannerView.resumeCameraPreview(CodeScanner.this);
+                                    }
+                                }).create().show();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(progressDialog.isShowing())
+                            progressDialog.dismiss();
+                    }
+                };
+                ItemRequest itemRequest = new ItemRequest(content, shopID,responseListener);
+                RequestQueue queue = Volley.newRequestQueue(CodeScanner.this);
+                queue.add(itemRequest);
+            }
+        });
+
     }
 
     @Override
@@ -56,7 +120,6 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
 
     @Override
     public void handleResult(Result result) {
-
         if(!progressDialog.isShowing()){
             progressDialog.setMessage("Scanning item....");
         }
