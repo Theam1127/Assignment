@@ -137,12 +137,22 @@ public class MainPage extends AppCompatActivity
         }
         else if(id== R.id.nav_transfer){
             userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
-            String username = userPreferences.getString("LOGIN_USER", "");
             double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT", "0.00"));
-
-            Intent intent = new Intent(this, TransferActivity.class);
-            startActivity(intent);
-
+            AlertDialog.Builder builder;
+            if(credit<5) {
+                builder = new AlertDialog.Builder(MainPage.this);
+                builder.setMessage("You should have minimum RM 5.00 in your wallet in order to do transfer! Do you want to top up now?").
+                        setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //redirect to topup page
+                            }
+                        }).setNegativeButton("No", null).create().show();
+            }
+            else {
+                Intent intent = new Intent(this, TransferActivity.class);
+                startActivity(intent);
+            }
         }
 
         else if(id==R.id.nav_logout){

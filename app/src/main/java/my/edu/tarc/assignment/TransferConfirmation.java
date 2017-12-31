@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ public class TransferConfirmation extends AppCompatActivity {
     String finalUsername;
     int finalAmount;
     private ProgressDialog pDialog;
+    double userCredit;
+    String currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,9 @@ public class TransferConfirmation extends AppCompatActivity {
         setContentView(R.layout.activity_transfer_confirmation);
 
         pDialog = new ProgressDialog(this);
-
+        userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+        userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));
+        currentUser = userPreference.getString("LOGIN_USER", "");
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             finalUsername = extras.getString("username");
@@ -40,8 +45,6 @@ public class TransferConfirmation extends AppCompatActivity {
 
         TextView tvTUsername = (TextView)findViewById(R.id.tvTUsername);
         TextView tvTAmount = (TextView)findViewById(R.id.tvTAmount);
-        Button btnConfirm = (Button)findViewById(R.id.btnConfirm);
-        Button btnCancel = (Button)findViewById(R.id.btnCancel);
 
         tvTUsername.setText(finalUsername);
         tvTAmount.setText("RM " + finalAmount + "");
@@ -49,24 +52,22 @@ public class TransferConfirmation extends AppCompatActivity {
 
     public void confirmTransfer(View v){
        pDialog.setCancelable(false);
-       userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
-       double userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));
-       String currentUser = userPreference.getString("LOGIN_USER", "");
-
-       userCredit -= finalAmount;
+        userCredit -= finalAmount;
+        SharedPreferences.Editor editor = userPreference.edit();
+        editor.putString("CURRENT_CREDIT", String.format("%.2f", userCredit));
+        editor.commit();
 
         if (!pDialog.isShowing())
             pDialog.setMessage("Transferring....");
         pDialog.show();
 
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
                 Toast.makeText(getApplicationContext(), "Transfer Successful! Please check email for receipt!", Toast.LENGTH_LONG).show();
-
-                Intent mainIntent = new Intent(TransferConfirmation.this, MainPage.class);
-                startActivity(mainIntent);
+                setResult(RESULT_OK);
+                finish();
 
                 if (pDialog.isShowing())
                     pDialog.dismiss();
@@ -74,31 +75,40 @@ public class TransferConfirmation extends AppCompatActivity {
             }
         };
 
+        ReceiveUserRequest receiveUserRequest = new ReceiveUserRequest(finalUsername, finalAmount, responseListener);
+        RequestQueue queue2 = Volley.newRequestQueue(TransferConfirmation.this);
+        queue2.add(receiveUserRequest);
+
         SendUserRequest sendUserRequest = new SendUserRequest(currentUser, userCredit, responseListener);
         RequestQueue queue1 = Volley.newRequestQueue(TransferConfirmation.this);
         queue1.add(sendUserRequest);
 
-        ReceiveUserRequest receiveUserRequest = new ReceiveUserRequest(finalUsername, finalAmount, responseListener);
-        RequestQueue queue2 = Volley.newRequestQueue(TransferConfirmation.this);
-        queue2.add(receiveUserRequest);
+
     }
 
     public void cancelAction(View v){
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         adb.setTitle("Are you sure?");
         adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface diaglog, int which){
-                Intent mainIntent = new Intent(TransferConfirmation.this, TransferActivity.class);
-                startActivity(mainIntent);
+                finish();
             }
         });
-
-        adb.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface diaglog, int which){
-                return;
-            }
-        });
-
+        adb.setNegativeButton("No",null);
         adb.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return true;
     }
 }

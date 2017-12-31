@@ -62,4 +62,5 @@
     <string name="confirm_transfer">Confirm to transfer credit to this user?</string>
     <string name="transfer_amount">Amount :</string>
     <string name="available_amount">Available amount (RM) :</string>
+    <string name="transfer_username">Username :</string>
 </resources>
