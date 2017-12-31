@@ -84,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 if (pDialog.isShowing())
                                     pDialog.dismiss();
-
                             } catch (JSONException e) {
                                 Toast.makeText(getApplicationContext(), "Error:" + e.getMessage(), Toast.LENGTH_LONG).show();
                             }

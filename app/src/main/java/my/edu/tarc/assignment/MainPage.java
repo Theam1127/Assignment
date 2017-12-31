@@ -136,6 +136,13 @@ public class MainPage extends AppCompatActivity
         else if(id == R.id.nav_topup){
         }
         else if(id== R.id.nav_transfer){
+            userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+            String username = userPreferences.getString("LOGIN_USER", "");
+            double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT", "0.00"));
+
+            Intent intent = new Intent(this, TransferActivity.class);
+            startActivity(intent);
+
         }
 
         else if(id==R.id.nav_logout){

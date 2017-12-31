@@ -55,6 +55,14 @@
             android:name=".SelectShop"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".TransferActivity"
+            android:parentActivityName=".MainPage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TransferConfirmation"
+            android:parentActivityName=".TransferActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
