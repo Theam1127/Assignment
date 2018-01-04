@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,8 +25,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.DatabaseRequest.ItemRequest;
 import my.edu.tarc.assignment.R;
+import my.edu.tarc.assignment.TopUp.TopUpMain;
 
 public class CodeScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler  {
     private ZXingScannerView zXingScannerView;
@@ -56,6 +59,10 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
                 String barcode = editTextBarcode.getText().toString();
                 if(barcode.isEmpty()){
                     editTextBarcode.setError("Please enter bar code");
+                    return;
+                }
+                if(!CheckConnection.isConnected(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
                     return;
                 }
                 zXingScannerView.stopCameraPreview();
@@ -124,6 +131,12 @@ public class CodeScanner extends AppCompatActivity implements ZXingScannerView.R
             progressDialog.setMessage("Scanning item....");
         }
         progressDialog.show();
+        if(!CheckConnection.isConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+            zXingScannerView.resumeCameraPreview(CodeScanner.this);
+            return;
+        }
         content = result.getText().toString();
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override

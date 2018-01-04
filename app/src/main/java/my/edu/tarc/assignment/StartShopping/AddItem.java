@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.DatabaseRequest.ItemRequest;
 import my.edu.tarc.assignment.R;
 
@@ -110,6 +111,10 @@ public class AddItem extends AppCompatActivity {
         buttonAddItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                if(!CheckConnection.isConnected(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent(getBaseContext(), CodeScanner.class);
                 intent.putExtra(PUT_SHOP, shopID);
                 startActivityForResult(intent, REQUEST_CODE_CONTENT);
@@ -119,6 +124,10 @@ public class AddItem extends AppCompatActivity {
         cart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!CheckConnection.isConnected(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 final Item editItem = cart_list.get(position);
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -149,6 +158,10 @@ public class AddItem extends AppCompatActivity {
         buttonCheckOut.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                if(!CheckConnection.isConnected(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if(cart_list.isEmpty())
                     Toast.makeText(getBaseContext(),"You have no items in your cart!", Toast.LENGTH_SHORT).show();
                 else {

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.R;
 
 
@@ -34,6 +36,10 @@ public class TACActivity extends AppCompatActivity {
         cv = intent.getIntExtra("6",0);
     }
     public void nextPage(View view){
+        if(!CheckConnection.isConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+            return;
+        }
         Intent intent = new Intent(this,TQActivity.class);
 
         if(tacInput.getText().toString().isEmpty())

@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.DatabaseRequest.BankTopUpRequest;
 import my.edu.tarc.assignment.R;
 
@@ -58,9 +59,14 @@ public class TQActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(!CheckConnection.isConnected(getApplicationContext())) {
+                        Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     if(!progressDialog.isShowing())
                         progressDialog.setMessage("Processing .....");
                     progressDialog.show();
+                    progressDialog.setCancelable(false);
                     userPreference = getSharedPreferences("CURRENT_USER",MODE_PRIVATE);
                     double credit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT","0.00"));
                     credit+=amount;

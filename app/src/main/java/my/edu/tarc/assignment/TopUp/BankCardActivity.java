@@ -15,7 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.R;
 
 public class BankCardActivity extends AppCompatActivity {
@@ -85,6 +87,10 @@ public class BankCardActivity extends AppCompatActivity {
                     adamt.setMessage("Please Select Your Top Up Amount").setNegativeButton("OK",null).create().show();
                 }
                 else{
+                    if(!CheckConnection.isConnected(getApplicationContext())) {
+                        Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Intent intent = new Intent(BankCardActivity.this,TACActivity.class);
                     RandomNumberGenerator tacGenerate = new RandomNumberGenerator();
                     int tac = tacGenerate.randomNumberGenerator();

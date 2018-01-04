@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 
 import my.edu.tarc.assignment.DatabaseRequest.LoginRequest;
 
+import my.edu.tarc.assignment.CheckConnection;
 public class LoginActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
@@ -32,10 +34,16 @@ public class LoginActivity extends AppCompatActivity {
         final EditText etPassword = (EditText)findViewById(R.id.etPassword);
         Button btnLogin = (Button)findViewById(R.id.btnLogin);
         pDialog = new ProgressDialog(this);
+        if(!CheckConnection.isConnected(getApplicationContext()))
+            Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!CheckConnection.isConnected(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
@@ -56,6 +64,10 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 else {
+                    if(!CheckConnection.isConnected(getApplicationContext())) {
+                        Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     if (!pDialog.isShowing())
                         pDialog.setMessage("Logging in...");
                     pDialog.show();

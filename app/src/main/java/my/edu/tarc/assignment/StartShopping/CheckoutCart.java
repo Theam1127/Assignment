@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.List;
 
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.DatabaseRequest.CheckoutRequest;
 import my.edu.tarc.assignment.DatabaseRequest.ItemUpdate;
 import my.edu.tarc.assignment.R;
@@ -54,6 +55,10 @@ public class CheckoutCart extends AppCompatActivity {
     }
 
     public void confirmCheckout(View view){
+        if(!CheckConnection.isConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+            return;
+        }
         progressDialog.setCancelable(false);
         userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
         double userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));

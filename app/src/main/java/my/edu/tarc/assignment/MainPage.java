@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import my.edu.tarc.assignment.StartShopping.AddItem;
 import my.edu.tarc.assignment.StartShopping.SelectShop;
@@ -46,6 +47,9 @@ public class MainPage extends AppCompatActivity
         textViewCurrentCredit = (TextView)header.findViewById(R.id.textViewCurrentCredit);
         textViewCurrentCredit.setText("Wallet: "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
         textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous"));
+        if(!CheckConnection.isConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -109,54 +113,67 @@ public class MainPage extends AppCompatActivity
         int id = item.getItemId();
         item.setCheckable(false);
         if (id == R.id.nav_AddItem) {
-            userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
-            String username = userPreferences.getString("LOGIN_USER", "");
-            double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT", "0.00"));
-            AlertDialog.Builder builder;
-            if(credit<10) {
-                builder = new AlertDialog.Builder(MainPage.this);
-                builder.setMessage("You should have minimum RM 10.00 in your wallet in order to start shopping! Do you want to top up now?").
-                        setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //redirect to topup page
-                            }
-                        }).setNegativeButton("No", null).create().show();
+            if(!CheckConnection.isConnected(getApplicationContext())) {
+                Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
             }
             else {
-                cartPreferences = getSharedPreferences(username, MODE_PRIVATE);
-                Intent intent;
-                String shopID = cartPreferences.getString(AddItem.GET_SHOP, "");
-                if (shopID.isEmpty())
-                    intent = new Intent(this, SelectShop.class);
-                else {
-                    intent = new Intent(this, AddItem.class);
-                    intent.putExtra(SelectShop.INTENT_SHOPID, shopID);
+                userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+                String username = userPreferences.getString("LOGIN_USER", "");
+                double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT", "0.00"));
+                AlertDialog.Builder builder;
+                if (credit < 10) {
+                    builder = new AlertDialog.Builder(MainPage.this);
+                    builder.setMessage("You should have minimum RM 10.00 in your wallet in order to start shopping! Do you want to top up now?").
+                            setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //redirect to topup page
+                                }
+                            }).setNegativeButton("No", null).create().show();
+                } else {
+                    cartPreferences = getSharedPreferences(username, MODE_PRIVATE);
+                    Intent intent;
+                    String shopID = cartPreferences.getString(AddItem.GET_SHOP, "");
+                    if (shopID.isEmpty())
+                        intent = new Intent(this, SelectShop.class);
+                    else {
+                        intent = new Intent(this, AddItem.class);
+                        intent.putExtra(SelectShop.INTENT_SHOPID, shopID);
+                    }
+                    startActivity(intent);
                 }
-                startActivity(intent);
             }
         }
         else if(id == R.id.nav_topup){
-            Intent intent = new Intent(this,TopUpMain.class);
-            startActivity(intent);
-        }
-        else if(id== R.id.nav_transfer){
-            userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
-            double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT", "0.00"));
-            AlertDialog.Builder builder;
-            if(credit<5) {
-                builder = new AlertDialog.Builder(MainPage.this);
-                builder.setMessage("You should have minimum RM 5.00 in your wallet in order to do transfer! Do you want to top up now?").
-                        setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //redirect to topup page
-                            }
-                        }).setNegativeButton("No", null).create().show();
+            if(!CheckConnection.isConnected(getApplicationContext())) {
+                Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
             }
             else {
-                Intent intent = new Intent(this, TransferActivity.class);
+                Intent intent = new Intent(this, TopUpMain.class);
                 startActivity(intent);
+            }
+        }
+        else if(id== R.id.nav_transfer){
+            if(!CheckConnection.isConnected(getApplicationContext())) {
+                Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+             }
+             else {
+                userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+                double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT", "0.00"));
+                AlertDialog.Builder builder;
+                if (credit < 5) {
+                    builder = new AlertDialog.Builder(MainPage.this);
+                    builder.setMessage("You should have minimum RM 5.00 in your wallet in order to do transfer! Do you want to top up now?").
+                            setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //redirect to topup page
+                                }
+                            }).setNegativeButton("No", null).create().show();
+                } else {
+                    Intent intent = new Intent(this, TransferActivity.class);
+                    startActivity(intent);
+                }
             }
         }
 

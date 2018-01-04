@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.R;
 
 public class SelectShop extends AppCompatActivity {
@@ -45,6 +46,10 @@ public class SelectShop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_shop);
+        if(!CheckConnection.isConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+            finish();
+        }
         progressDialog = new ProgressDialog(this);
         autoCompleteTextViewShop = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextViewShopList);
         shop_list = new ArrayList<Shop>();

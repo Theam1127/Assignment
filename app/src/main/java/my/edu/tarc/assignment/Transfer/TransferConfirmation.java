@@ -51,19 +51,18 @@ public class TransferConfirmation extends AppCompatActivity {
 
     public void confirmTransfer(View v){
        pDialog.setCancelable(false);
-        userCredit -= finalAmount;
-        SharedPreferences.Editor editor = userPreference.edit();
-        editor.putString("CURRENT_CREDIT", String.format("%.2f", userCredit));
-        editor.commit();
+
 
         if (!pDialog.isShowing())
             pDialog.setMessage("Transferring....");
         pDialog.show();
-
-
+        userCredit -= finalAmount;
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                SharedPreferences.Editor editor = userPreference.edit();
+                editor.putString("CURRENT_CREDIT", String.format("%.2f", userCredit));
+                editor.commit();
                 Toast.makeText(getApplicationContext(), "Transfer Successful! Please check email for receipt!", Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK);
                 finish();

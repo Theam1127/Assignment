@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.R;
 import my.edu.tarc.assignment.DatabaseRequest.getQRDetailRequest;
 
@@ -53,6 +54,10 @@ public class TopUpMain extends AppCompatActivity implements ZXingScannerView.Res
         bankCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!CheckConnection.isConnected(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 Intent intent = new Intent(TopUpMain.this,BankCardActivity.class);
                 startActivity(intent);
                 finish();
@@ -79,10 +84,16 @@ public class TopUpMain extends AppCompatActivity implements ZXingScannerView.Res
 
     @Override
     public void handleResult(Result result) {
-
         if(!progressDialog.isShowing())
             progressDialog.setMessage("Processing .....");
         progressDialog.show();
+        progressDialog.setCancelable(false);
+        if(!CheckConnection.isConnected(getApplicationContext())) {
+            Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+            zXingScannerView.resumeCameraPreview(TopUpMain.this);
+            return;
+        }
         qrScanCode = result.getText();
         topUpCode = Integer.parseInt(qrScanCode);
         Response.Listener<String> responseListener = new Response.Listener<String>() {
