@@ -63,6 +63,26 @@
             android:name=".TransferConfirmation"
             android:parentActivityName=".TransferActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".TopUpMain"
+            android:parentActivityName=".MainPage"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BankCardActivity"
+            android:parentActivityName=".TopUpMain"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".TQActivity"
+            android:parentActivityName=".TopUpMain"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TACActivity"
+            android:parentActivityName=".TopUpMain"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TACDisplayActivity"
+            android:parentActivityName=".TopUpMain"
+            android:screenOrientation="portrait"/>
+
+
+
     </application>
 
 </manifest>

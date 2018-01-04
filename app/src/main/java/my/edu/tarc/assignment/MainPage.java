@@ -134,6 +134,8 @@ public class MainPage extends AppCompatActivity
             }
         }
         else if(id == R.id.nav_topup){
+            Intent intent = new Intent(this,TopUpMain.class);
+            startActivity(intent);
         }
         else if(id== R.id.nav_transfer){
             userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);

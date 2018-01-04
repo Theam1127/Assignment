@@ -63,4 +63,29 @@
     <string name="transfer_amount">Amount :</string>
     <string name="available_amount">Available amount (RM) :</string>
     <string name="transfer_username">Username :</string>
+
+    <string name="topUp">Top Up</string>
+    <string name="topup">Top Up Main Page</string>
+    <string name="bank">Back Card</string>
+    <string name="qr">QR Code</string>
+    <string name="cardType">Select Your Bank Card</string>
+    <string name="creditCard">Credit Card</string>
+    <string name="debitCard">Debit Card</string>
+    <string name="cardNo">Enter Your Card Number</string>
+    <string name="ok">OK</string>
+    <string name="Bankamount">Select Your Amount</string>
+    <string name="rm100">RM 100</string>
+    <string name="cv">CV Code</string>
+    <string name="tac">Enter Your TAC Code</string>
+    <string name="thank">Thank You</string>
+    <string name="point">Your Point</string>
+    <string name="scan">Scan</string>
+    <string name="card">Card Type:</string>
+    <string name="cardNumber">Card Number:</string>
+    <string name="cardCV">CV Code:</string>
+    <string name="topupamt">Amount:</string>
+    <string name="error_cardno">Please Enter Bank Card Number</string>
+    <string name="error_cv">Please Enter Your CV Number</string>
+    <string name="error_tac">Please Enter Your TAC Code</string>
+
 </resources>
