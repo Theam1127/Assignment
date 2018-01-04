@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="my.edu.tarc.assignment.TopUpMain">
+    tools:context="my.edu.tarc.assignment.TopUp.TopUpMain">
 
     <TextView
         android:id="@+id/textView"

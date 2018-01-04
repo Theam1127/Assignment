@@ -27,7 +27,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".AddItem"
+            android:name=".StartShopping.AddItem"
             android:alwaysRetainTaskState="true"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait" />
@@ -40,45 +40,45 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CodeScanner"
-            android:parentActivityName=".AddItem"
+            android:name=".StartShopping.CodeScanner"
+            android:parentActivityName=".StartShopping.AddItem"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ItemDetail"
-            android:parentActivityName=".AddItem"
+            android:name=".StartShopping.ItemDetail"
+            android:parentActivityName=".StartShopping.AddItem"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CheckoutCart"
-            android:parentActivityName=".AddItem"
+            android:name=".StartShopping.CheckoutCart"
+            android:parentActivityName=".StartShopping.AddItem"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SelectShop"
+            android:name=".StartShopping.SelectShop"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TransferActivity"
+            android:name=".Transfer.TransferActivity"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TransferConfirmation"
-            android:parentActivityName=".TransferActivity"
+            android:name=".Transfer.TransferConfirmation"
+            android:parentActivityName=".Transfer.TransferActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".TopUpMain"
+        <activity android:name=".TopUp.TopUpMain"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait"/>
-        <activity android:name=".BankCardActivity"
-            android:parentActivityName=".TopUpMain"
+        <activity android:name=".TopUp.BankCardActivity"
+            android:parentActivityName=".TopUp.TopUpMain"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".TQActivity"
-            android:parentActivityName=".TopUpMain"
+            android:name=".TopUp.TQActivity"
+            android:parentActivityName=".TopUp.TopUpMain"
             android:screenOrientation="portrait"/>
-        <activity android:name=".TACActivity"
-            android:parentActivityName=".TopUpMain"
+        <activity android:name=".TopUp.TACActivity"
+            android:parentActivityName=".TopUp.TopUpMain"
             android:screenOrientation="portrait"/>
-        <activity android:name=".TACDisplayActivity"
-            android:parentActivityName=".TopUpMain"
+        <activity android:name=".TopUp.TACDisplayActivity"
+            android:parentActivityName=".TopUp.TopUpMain"
             android:screenOrientation="portrait"/>
 
 

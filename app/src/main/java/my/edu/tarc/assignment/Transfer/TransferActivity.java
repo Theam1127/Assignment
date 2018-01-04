@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.Transfer;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -21,6 +21,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import my.edu.tarc.assignment.R;
+import my.edu.tarc.assignment.DatabaseRequest.TransferRequest;
 
 public class TransferActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
@@ -46,7 +49,16 @@ public class TransferActivity extends AppCompatActivity {
                 userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
                 double userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));
                 String transferUser = userPreference.getString("LOGIN_USER", "");
-                final int amount = Integer.parseInt(((RadioButton)findViewById(rgAmount.getCheckedRadioButtonId())).getText().toString());
+                int transfer_amount=0;
+                if (rgAmount.getCheckedRadioButtonId()==R.id.rbFive)
+                    transfer_amount=5;
+                else if(rgAmount.getCheckedRadioButtonId()==R.id.rbTen)
+                    transfer_amount=10;
+                else if(rgAmount.getCheckedRadioButtonId()==R.id.rbTwenty)
+                    transfer_amount=20;
+                else if (rgAmount.getCheckedRadioButtonId()==R.id.rbFifty)
+                    transfer_amount=50;
+                final int amount = transfer_amount;
 
                 if(username.isEmpty()){
                     etTransferUser.setError(getString(R.string.error_username));

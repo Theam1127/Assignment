@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="my.edu.tarc.assignment.BankCardActivity">
+    tools:context="my.edu.tarc.assignment.TopUp.BankCardActivity">
 
     <TextView
         android:id="@+id/bankCardInfo"
@@ -53,6 +53,8 @@
         android:ems="10"
         android:hint="@string/cardNo"
         android:inputType="number"
+        android:maxLength="16"
+        android:maxLines="1"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -147,6 +149,8 @@
         android:ems="10"
         android:hint="@string/cv"
         android:inputType="number"
+        android:maxLength="3"
+        android:maxLines="1"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

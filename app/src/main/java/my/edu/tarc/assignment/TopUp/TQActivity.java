@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.TopUp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,12 +18,15 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import my.edu.tarc.assignment.DatabaseRequest.BankTopUpRequest;
+import my.edu.tarc.assignment.R;
+
 public class TQActivity extends AppCompatActivity {
 
     private TextView t1,t2,t3,t4;
     private EditText tacInput;
-    private int tacInputCode,cardNo,cv,amount,tac;
-    private String cardType,username;
+    private int tacInputCode,cv,amount,tac;
+    private String cardType,username, cardNo;
     private Button confirm;
     ProgressDialog progressDialog;
     SharedPreferences userPreference;
@@ -44,11 +47,11 @@ public class TQActivity extends AppCompatActivity {
         username = intent.getStringExtra("1");
         amount = intent.getIntExtra("2",0);
         cardType = intent.getStringExtra("3");
-        cardNo = intent.getIntExtra("4",0);
+        cardNo = intent.getStringExtra("4");
         cv = intent.getIntExtra("5",0);
 
         t1.setText(cardType);
-        t2.setText(""+cardNo);
+        t2.setText(cardNo);
         t3.setText(""+cv);
         t4.setText(""+amount);
 
@@ -94,8 +97,6 @@ public class TQActivity extends AppCompatActivity {
     }
 
     public void backToHome(View view){
-        Intent intent = new Intent(this,TopUpMain.class);
-        startActivity(intent);
         finish();
     }
 

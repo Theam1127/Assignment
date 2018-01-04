@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.StartShopping;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import my.edu.tarc.assignment.R;
 
 public class SelectShop extends AppCompatActivity {
     AutoCompleteTextView autoCompleteTextViewShop;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="my.edu.tarc.assignment.TQActivity">
+    tools:context="my.edu.tarc.assignment.TopUp.TQActivity">
 
     <Button
         android:id="@+id/backtoMain"
@@ -31,11 +31,12 @@
 
     <TextView
         android:id="@+id/cardTypeIn"
-        android:layout_width="95dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
+        android:gravity="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/cardTypeCon"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,11 +53,12 @@
 
     <TextView
         android:id="@+id/cardNoIn"
-        android:layout_width="95dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
+        android:gravity="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/cardNoCon"
         app:layout_constraintTop_toBottomOf="@+id/cardTypeIn" />
 
@@ -84,21 +86,23 @@
 
     <TextView
         android:id="@+id/cvCodeIn"
-        android:layout_width="95dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
+        android:gravity="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/cvCodeCon"
         app:layout_constraintTop_toBottomOf="@+id/cardNoIn" />
 
     <TextView
         android:id="@+id/amountIn"
-        android:layout_width="95dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textSize="20sp"
+        android:gravity="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/amountCon"
         app:layout_constraintTop_toBottomOf="@+id/cvCodeIn" />
 

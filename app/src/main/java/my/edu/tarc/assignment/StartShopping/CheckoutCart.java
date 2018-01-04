@@ -1,12 +1,9 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.StartShopping;
 
-import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,11 +18,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import my.edu.tarc.assignment.DatabaseRequest.CheckoutRequest;
+import my.edu.tarc.assignment.DatabaseRequest.ItemUpdate;
+import my.edu.tarc.assignment.R;
 
 public class CheckoutCart extends AppCompatActivity {
     List<Item> cart;

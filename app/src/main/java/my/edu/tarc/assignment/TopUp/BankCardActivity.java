@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.TopUp;
 
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import my.edu.tarc.assignment.R;
 
 public class BankCardActivity extends AppCompatActivity {
 
@@ -76,6 +78,7 @@ public class BankCardActivity extends AppCompatActivity {
                 }
                 else if(etcv.isEmpty()){
                     cv.setError(getString(R.string.error_cv));
+                    return;
                 }
                 else  if(topupAmount<10){
                     AlertDialog.Builder adamt = new AlertDialog.Builder(BankCardActivity.this);
@@ -88,7 +91,7 @@ public class BankCardActivity extends AppCompatActivity {
 
                     String cardTypes = ((RadioButton)findViewById(cardType.getCheckedRadioButtonId())).getText().toString();
                     int cvCode = Integer.parseInt(cv.getText().toString());
-                    int cardno = Integer.parseInt(cardNo.getText().toString());
+                    //int cardno = Integer.parseInt(cardNo.getText().toString());
 
                     notification = new NotificationCompat.Builder(BankCardActivity.this);
                     //notification.setAutoCancel(true);
@@ -106,7 +109,7 @@ public class BankCardActivity extends AppCompatActivity {
                     intent.putExtra("2",username);
                     intent.putExtra("3",tac);
                     intent.putExtra("4",cardTypes);
-                    intent.putExtra("5",cardno);
+                    intent.putExtra("5",etcardno);
                     intent.putExtra("6",cvCode);
 
 

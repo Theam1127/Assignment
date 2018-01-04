@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.TopUp;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -24,9 +23,10 @@ import com.google.zxing.Result;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import my.edu.tarc.assignment.R;
+import my.edu.tarc.assignment.DatabaseRequest.getQRDetailRequest;
 
 public class TopUpMain extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 

@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.StartShopping;
 
 import java.io.Serializable;
 

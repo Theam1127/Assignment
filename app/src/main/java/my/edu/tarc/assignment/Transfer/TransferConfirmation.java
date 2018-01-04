@@ -1,15 +1,13 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.Transfer;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +15,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import my.edu.tarc.assignment.R;
+import my.edu.tarc.assignment.DatabaseRequest.ReceiveUserRequest;
+import my.edu.tarc.assignment.DatabaseRequest.SendUserRequest;
 
 public class TransferConfirmation extends AppCompatActivity {
     SharedPreferences userPreference;

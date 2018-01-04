@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.DatabaseRequest;
 
 /**
  * Created by yongj on 31/12/2017.

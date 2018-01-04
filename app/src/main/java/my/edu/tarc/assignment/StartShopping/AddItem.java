@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.StartShopping;
 
 
 import android.content.DialogInterface;
@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +29,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import my.edu.tarc.assignment.DatabaseRequest.ItemRequest;
+import my.edu.tarc.assignment.R;
+
 public class AddItem extends AppCompatActivity {
     public static final int REQUEST_CODE_CONTENT = 1;
 

@@ -1,4 +1,4 @@
-package my.edu.tarc.assignment;
+package my.edu.tarc.assignment.TopUp;
 
 /**
  * Created by JE on 12/30/2017.
