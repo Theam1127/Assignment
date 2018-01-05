@@ -101,7 +101,7 @@ public class BankCardActivity extends AppCompatActivity {
 
                     notification = new NotificationCompat.Builder(BankCardActivity.this);
                     //notification.setAutoCancel(true);
-                    notification.setSmallIcon(R.drawable.notification);
+                    notification.setSmallIcon(R.drawable.logo);
                     notification.setTicker("Hello Ticker");
                     notification.setWhen(System.currentTimeMillis());
                     notification.setContentTitle("TAC Code");

@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +23,13 @@ import my.edu.tarc.assignment.StartShopping.SelectShop;
 import my.edu.tarc.assignment.TopUp.TopUpMain;
 import my.edu.tarc.assignment.Transfer.TransferActivity;
 
+
 public class MainPage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences userPreferences, cartPreferences;
     TextView textViewUserName, textViewCurrentCredit;
+    ScrollView scrollViewMain;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +47,24 @@ public class MainPage extends AppCompatActivity
         userPreferences = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
         View header = navigationView.getHeaderView(0);
         textViewUserName = (TextView)header.findViewById(R.id.TextViewUserName);
-        textViewCurrentCredit = (TextView)header.findViewById(R.id.textViewCurrentCredit);
-        textViewCurrentCredit.setText("Wallet: "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
-        textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous"));
+        textViewCurrentCredit = (TextView)findViewById(R.id.textViewCurrentCredit);
+        scrollViewMain = (ScrollView)findViewById(R.id.main_page_scroll);
         if(!CheckConnection.isConnected(getApplicationContext())) {
             Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
         }
+
+        textViewCurrentCredit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!CheckConnection.isConnected(getApplicationContext())) {
+                    Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(MainPage.this, TopUpMain.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 
@@ -83,27 +98,6 @@ public class MainPage extends AppCompatActivity
         super.onDestroy();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_page, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -127,7 +121,13 @@ public class MainPage extends AppCompatActivity
                             setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //redirect to topup page
+                                    if(!CheckConnection.isConnected(getApplicationContext())) {
+                                        Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        Intent intent = new Intent(MainPage.this, TopUpMain.class);
+                                        startActivity(intent);
+                                    }
                                 }
                             }).setNegativeButton("No", null).create().show();
                 } else {
@@ -167,7 +167,13 @@ public class MainPage extends AppCompatActivity
                             setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //redirect to topup page
+                                    if(!CheckConnection.isConnected(getApplicationContext())) {
+                                        Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                                    }
+                                    else {
+                                        Intent intent = new Intent(MainPage.this, TopUpMain.class);
+                                        startActivity(intent);
+                                    }
                                 }
                             }).setNegativeButton("No", null).create().show();
                 } else {
@@ -200,7 +206,8 @@ public class MainPage extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        textViewCurrentCredit.setText("Wallet: RM "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
+        textViewCurrentCredit.setText("WALLET\n\nRM "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
         textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous"));
+        scrollViewMain.fullScroll(ScrollView.FOCUS_UP);
     }
 }

@@ -84,6 +84,7 @@ public class TopUpMain extends AppCompatActivity implements ZXingScannerView.Res
 
     @Override
     public void handleResult(Result result) {
+        qrScanCode = result.getText();
         if(!progressDialog.isShowing())
             progressDialog.setMessage("Processing .....");
         progressDialog.show();
@@ -94,15 +95,28 @@ public class TopUpMain extends AppCompatActivity implements ZXingScannerView.Res
             zXingScannerView.resumeCameraPreview(TopUpMain.this);
             return;
         }
-        qrScanCode = result.getText();
-        topUpCode = Integer.parseInt(qrScanCode);
+        try {
+            topUpCode = Integer.parseInt(qrScanCode);
+        }
+        catch(Exception e){
+            AlertDialog.Builder ad = new AlertDialog.Builder(TopUpMain.this);
+            ad.setMessage("Top Up Fail. Please use Valid Code").setNegativeButton("Retry", null).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    zXingScannerView.resumeCameraPreview(TopUpMain.this);
+                    progressDialog.dismiss();
+                }
+            }).create().show();
+            return;
+        }
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try{
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
-                    if (success==true){
+                    if (success){
                         int jsonCredit = jsonResponse.getInt("credit");
                         double credit = Double.parseDouble(userPreferences.getString("CURRENT_CREDIT","0.00"));
                         credit+=jsonCredit;
@@ -115,7 +129,7 @@ public class TopUpMain extends AppCompatActivity implements ZXingScannerView.Res
                         AlertDialog.Builder ad = new AlertDialog.Builder(TopUpMain.this);
                         ad.setMessage("Top Up Fail. Please use Valid Code").setNegativeButton("Retry", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                            public void onClick(DialogInterface dialog, int which) {
                                 zXingScannerView.resumeCameraPreview(TopUpMain.this);
                             }
                         }).create().show();

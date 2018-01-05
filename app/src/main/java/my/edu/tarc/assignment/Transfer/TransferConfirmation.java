@@ -63,7 +63,7 @@ public class TransferConfirmation extends AppCompatActivity {
                 SharedPreferences.Editor editor = userPreference.edit();
                 editor.putString("CURRENT_CREDIT", String.format("%.2f", userCredit));
                 editor.commit();
-                Toast.makeText(getApplicationContext(), "Transfer Successful! Please check email for receipt!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Transfer Successful!", Toast.LENGTH_LONG).show();
                 setResult(RESULT_OK);
                 finish();
 

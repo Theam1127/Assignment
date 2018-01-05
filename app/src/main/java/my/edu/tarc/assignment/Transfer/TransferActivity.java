@@ -22,8 +22,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.R;
 import my.edu.tarc.assignment.DatabaseRequest.TransferRequest;
+import my.edu.tarc.assignment.StartShopping.CheckoutCart;
+import my.edu.tarc.assignment.TopUp.TopUpMain;
 
 public class TransferActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
@@ -70,7 +73,13 @@ public class TransferActivity extends AppCompatActivity {
                     builder.setMessage("You do not have sufficient amount to transfer! Top up now?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            if(!CheckConnection.isConnected(getApplicationContext())) {
+                                Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Intent intent = new Intent(TransferActivity.this, TopUpMain.class);
+                                startActivity(intent);
+                            }
                         }
                     }).setNegativeButton("Continue", null).create().show();
                 }
@@ -141,5 +150,13 @@ public class TransferActivity extends AppCompatActivity {
                 onBackPressed();
         }
         return true;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+        double userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));
+        Toast.makeText(this,String.format("Current Credit: RM %.2f", userCredit), Toast.LENGTH_LONG).show();
     }
 }

@@ -25,6 +25,7 @@ import my.edu.tarc.assignment.CheckConnection;
 import my.edu.tarc.assignment.DatabaseRequest.CheckoutRequest;
 import my.edu.tarc.assignment.DatabaseRequest.ItemUpdate;
 import my.edu.tarc.assignment.R;
+import my.edu.tarc.assignment.TopUp.TopUpMain;
 
 public class CheckoutCart extends AppCompatActivity {
     List<Item> cart;
@@ -110,7 +111,13 @@ public class CheckoutCart extends AppCompatActivity {
             }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    //redirect to top up page
+                    if(!CheckConnection.isConnected(getApplicationContext())) {
+                        Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Intent intent = new Intent(CheckoutCart.this, TopUpMain.class);
+                        startActivity(intent);
+                    }
                 }
             }).create().show();
         }
@@ -130,4 +137,11 @@ public class CheckoutCart extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
+        double userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));
+        Toast.makeText(this,String.format("Current Credit: RM %.2f", userCredit), Toast.LENGTH_LONG).show();
+    }
 }

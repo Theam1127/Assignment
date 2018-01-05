@@ -44,7 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String ageText = etRAge.getText().toString();
                 String email = etREmail.getText().toString();
                 String gender = ((RadioButton) findViewById(rgGender.getCheckedRadioButtonId())).getText().toString();
-
+                String emailPattern = "[a-zA-z0-a._-]+@[a-z]+\\.+[a-z]+";
+                String passwordPattern = ".{8,}";
                 if (username.isEmpty()) {
                     etRUsername.setError(getString(R.string.error_username));
                     return;
@@ -58,9 +59,20 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (email.isEmpty()) {
                     etREmail.setError(getString(R.string.error_email));
                     return;
+                } else if(!email.matches(emailPattern)){
+                    etREmail.setError(getString(R.string.error_email_format));
+                    return;
+                }
+                else if(!password.matches(passwordPattern)){
+                    etRPassword.setError(getString(R.string.error_password_format));
+                    return;
                 }
                 else {
                     int age = Integer.parseInt(ageText);
+                    if(age<18){
+                        etRAge.setError(getString(R.string.error_age_minimum));
+                        return;
+                    }
                     if (!pDialog.isShowing())
                         pDialog.setMessage("Registering...");
                     pDialog.show();
