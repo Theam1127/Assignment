@@ -208,7 +208,7 @@ public class MainPage extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         textViewCurrentCredit.setText("WALLET\n\nRM "+userPreferences.getString("CURRENT_CREDIT", "0.00"));
-        textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous"));
+        textViewUserName.setText("Hi, "+userPreferences.getString("LOGIN_USER", "Anonymous")+"! Welcome to Easy Shop!");
         scrollViewMain.fullScroll(ScrollView.FOCUS_UP);
     }
 }
