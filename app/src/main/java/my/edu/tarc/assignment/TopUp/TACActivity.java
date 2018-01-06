@@ -54,6 +54,7 @@ public class TACActivity extends AppCompatActivity {
                     Intent intent1 = new Intent(TACActivity.this,TopUpMain.class);
                     startActivity(intent1);
                     finish();
+                    overridePendingTransition(R.xml.enter,R.xml.exit);
                 }
             }).create().show();
         }
@@ -74,6 +75,7 @@ public class TACActivity extends AppCompatActivity {
         Intent intent = new Intent(this,TopUpMain.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(R.xml.enter,R.xml.exit);
     }
 
     @Override

@@ -195,6 +195,7 @@ public class MainPage extends AppCompatActivity
                     Intent intent = new Intent(MainPage.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
+                    overridePendingTransition(R.xml.enter,R.xml.exit);
                 }
             }).setNegativeButton("No", null).create().show();
         }

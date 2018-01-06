@@ -144,6 +144,7 @@ public class BankCardActivity extends AppCompatActivity {
         Intent intent = new Intent(this,TopUpMain.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(R.xml.enter,R.xml.exit);
     }
 
     @Override
