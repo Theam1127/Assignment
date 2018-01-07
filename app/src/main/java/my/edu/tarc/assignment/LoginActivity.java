@@ -20,8 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import my.edu.tarc.assignment.DatabaseRequest.LoginRequest;
-
-import my.edu.tarc.assignment.CheckConnection;
 public class LoginActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
@@ -90,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 } else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                    builder.setMessage("Login Failed").setNegativeButton("Retry", null).create().show();
+                                    builder.setMessage("Login Failed. Incorrect username/password.").setNegativeButton("Retry", null).create().show();
                                 }
                                 if (pDialog.isShowing())
                                     pDialog.dismiss();
