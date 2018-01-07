@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 } else {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                    builder.setMessage("Login Failed. Incorrect username/password.").setNegativeButton("Retry", null).create().show();
+                                    builder.setMessage("Login Failed. Incorrect username or password.").setNegativeButton("Retry", null).create().show();
                                 }
                                 if (pDialog.isShowing())
                                     pDialog.dismiss();
