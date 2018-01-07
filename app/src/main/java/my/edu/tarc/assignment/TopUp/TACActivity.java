@@ -44,7 +44,7 @@ public class TACActivity extends AppCompatActivity {
 
         if(tacInput.getText().toString().isEmpty()) {
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setMessage("Incorrect TAC Code").setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            adb.setMessage("Please enter TAC Code").setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Intent intent1 = new Intent(TACActivity.this, TopUpMain.class);
