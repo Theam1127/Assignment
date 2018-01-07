@@ -29,7 +29,7 @@ import my.edu.tarc.assignment.TopUp.TopUpMain;
 
 public class CheckoutCart extends AppCompatActivity {
     List<Item> cart;
-    TextView textViewCheckoutTotal;
+    TextView textViewCheckoutTotal, textViewAccountBalance;
     ProgressDialog progressDialog;
     SharedPreferences userPreference;
     double total;
@@ -50,7 +50,8 @@ public class CheckoutCart extends AppCompatActivity {
             total+=cart.get(a).getPrice();
         }
         textViewCheckoutTotal = (TextView)findViewById(R.id.textViewCheckoutTotal);
-        textViewCheckoutTotal.setText(String.format("RM %.2f", total));
+        textViewAccountBalance = (TextView)findViewById(R.id.textViewAccountBalance);
+        textViewCheckoutTotal.setText(String.format("Total: RM %.2f", total));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, cart_items);
         listViewCheckOutCart.setAdapter(arrayAdapter);
     }
@@ -142,6 +143,6 @@ public class CheckoutCart extends AppCompatActivity {
         super.onResume();
         userPreference = getSharedPreferences("CURRENT_USER", MODE_PRIVATE);
         double userCredit = Double.parseDouble(userPreference.getString("CURRENT_CREDIT", "0.00"));
-        Toast.makeText(this,String.format("Current Credit: RM %.2f", userCredit), Toast.LENGTH_LONG).show();
+        textViewAccountBalance.setText(String.format("Current Credit: RM %.2f", userCredit));
     }
 }
