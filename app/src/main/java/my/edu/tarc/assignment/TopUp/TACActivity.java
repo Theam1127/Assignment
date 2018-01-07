@@ -42,41 +42,32 @@ public class TACActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(this,TQActivity.class);
 
-        if(tacInput.getText().toString().isEmpty()) {
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setMessage("Please enter TAC Code").setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent1 = new Intent(TACActivity.this, TopUpMain.class);
-                    startActivity(intent1);
-                    finish();
-                    overridePendingTransition(R.xml.enter, R.xml.exit);
-                }
-            }).create().show();
-        }
-        else
-            tacInputCode = Integer.parseInt(tacInput.getText().toString());
-        if(tacInputCode!=tac){
-            AlertDialog.Builder ad = new AlertDialog.Builder(this);
-            ad.setMessage("Incorrect TAC Code").setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent1 = new Intent(TACActivity.this,TopUpMain.class);
-                    startActivity(intent1);
-                    finish();
-                    overridePendingTransition(R.xml.enter,R.xml.exit);
-                }
-            }).create().show();
+        if(tacInput.getText().toString().isEmpty()){
+            tacInput.setError(getResources().getString(R.string.error_tac));
         }
         else{
-
-            intent.putExtra("1",username);
-            intent.putExtra("2",amount);
-            intent.putExtra("3",cardType);
-            intent.putExtra("4",cardNo);
-            intent.putExtra("5",cv);
-            startActivity(intent);
-            finish();
+            tacInputCode = Integer.parseInt(tacInput.getText().toString());
+            if(tacInputCode!=tac){
+                AlertDialog.Builder ad = new AlertDialog.Builder(this);
+                ad.setMessage("Incorrect TAC Code").setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent1 = new Intent(TACActivity.this,TopUpMain.class);
+                        startActivity(intent1);
+                        finish();
+                        overridePendingTransition(R.xml.enter,R.xml.exit);
+                    }
+                }).create().show();
+            }
+            else{
+                intent.putExtra("1",username);
+                intent.putExtra("2",amount);
+                intent.putExtra("3",cardType);
+                intent.putExtra("4",cardNo);
+                intent.putExtra("5",cv);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
