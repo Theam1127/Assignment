@@ -64,7 +64,7 @@
     <string name="rm50">RM 50</string>
     <string name="confirm_transfer">Confirm to transfer credit to this user?</string>
     <string name="transfer_amount">Amount :</string>
-    <string name="available_amount">Available amount :</string>
+    <string name="available_amount">Transfer amount:</string>
     <string name="transfer_username">Username :</string>
 
     <string name="topUp">Top Up</string>
@@ -90,5 +90,8 @@
     <string name="error_cardno">Please Enter Bank Card Number</string>
     <string name="error_cv">Please Enter Your CV Number</string>
     <string name="error_tac">Please Enter Your TAC Code</string>
+    <string name="error_cardnolenght">Please Enter Valid Bank Card</string>
+    <string name="error_cvlenght">Please Enter Valid CV Number</string>
+    <string name="receiver_username">Receiver\'s Username</string>
 
 </resources>

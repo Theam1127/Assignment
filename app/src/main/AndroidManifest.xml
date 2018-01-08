@@ -24,15 +24,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"
+            android:label="Login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".StartShopping.AddItem"
+            android:label="Your Cart"
             android:alwaysRetainTaskState="true"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait" />
         <activity
             android:name=".RegisterActivity"
+            android:label="Registration"
             android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -41,40 +44,50 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".StartShopping.CodeScanner"
+            android:label="Scanner"
             android:parentActivityName=".StartShopping.AddItem"
             android:screenOrientation="portrait" />
         <activity
             android:name=".StartShopping.ItemDetail"
+            android:label="Item Detail"
             android:parentActivityName=".StartShopping.AddItem"
             android:screenOrientation="portrait" />
         <activity
             android:name=".StartShopping.CheckoutCart"
+            android:label="Checkout"
             android:parentActivityName=".StartShopping.AddItem"
             android:screenOrientation="portrait" />
         <activity
             android:name=".StartShopping.SelectShop"
+            android:label="Select Shop"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Transfer.TransferActivity"
+            android:label="Credit Transfer"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Transfer.TransferConfirmation"
             android:parentActivityName=".Transfer.TransferActivity"
+            android:label="Confirmation"
             android:screenOrientation="portrait" />
 
         <activity android:name=".TopUp.TopUpMain"
+            android:label="Top Up"
             android:parentActivityName=".MainPage"
             android:screenOrientation="portrait"/>
         <activity android:name=".TopUp.BankCardActivity"
+            android:label="Bank Detail"
             android:parentActivityName=".TopUp.TopUpMain"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".TopUp.TQActivity"
+            android:label="Top Up Summary"
             android:parentActivityName=".TopUp.TopUpMain"
             android:screenOrientation="portrait"/>
         <activity android:name=".TopUp.TACActivity"
+            android:label="TAC"
             android:parentActivityName=".TopUp.TopUpMain"
             android:screenOrientation="portrait"/>
         <activity android:name=".TopUp.TACDisplayActivity"

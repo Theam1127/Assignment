@@ -86,6 +86,14 @@ public class BankCardActivity extends AppCompatActivity {
                     AlertDialog.Builder adamt = new AlertDialog.Builder(BankCardActivity.this);
                     adamt.setMessage("Please Select Your Top Up Amount").setNegativeButton("OK",null).create().show();
                 }
+                else if(cardNo.length()!=16){
+                    cardNo.setError(getString(R.string.error_cardnolenght));
+                    return;
+                }
+                else if(etcv.length()!=3){
+                    cv.setError(getString(R.string.error_cvlenght));
+                    return;
+                }
                 else{
                     if(!CheckConnection.isConnected(getApplicationContext())) {
                         Toast.makeText(getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
