@@ -32,7 +32,6 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
-    <string name="age">Age</string>
     <string name="birthday">Birthday</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -42,8 +41,7 @@
     <string name="error_username">Please enter username</string>
     <string name="error_password">Please enter password</string>
     <string name="error_password_format">Password length should be at least 8!</string>
-    <string name="error_age_minimum">You should be minimum 18 years old to use our application!</string>
-    <string name="error_age">Please enter your age</string>
+    <string name="error_birthday">Please enter your birthday</string>
     <string name="error_email">Please enter an email</string>
     <string name="error_email_format">Invalid email!</string>
     <string name="emptyCart">Empty Cart</string>
